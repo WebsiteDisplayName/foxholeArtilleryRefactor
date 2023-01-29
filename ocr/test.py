@@ -9,9 +9,10 @@ import keyboard
 from PIL import Image
 import PIL
 import os
-
 import numpy as np
 import easyocr
+import re
+
 # -50, 0, 100, 100
 # small box around cursor screen cap
 
@@ -31,7 +32,7 @@ def screenshotMouseArea(fileName, left=-38, top=14, width=74, height=40):
     im = pyautogui.screenshot(region=(left, top, width, height))
     im = im.convert("L")
     script_dir = os.path.dirname(__file__)
-    rel_path = "images\\" + fileName + ".png"
+    rel_path = "images\\" + fileName + ".jpg"
     abs_file_path = os.path.join(script_dir, "..", rel_path)
     im.save(abs_file_path)
     return
@@ -39,14 +40,19 @@ def screenshotMouseArea(fileName, left=-38, top=14, width=74, height=40):
 
 # https://github.com/boppreh/keyboard#api
 # counter = 0
-while True:
-    keyboard.wait("right alt")
-    screenshotMouseArea(f"test{1}")
-    # counter += 1
+# while True:
+#     keyboard.wait("right alt")
+#     screenshotMouseArea(f"test{1}")
+#     counter += 1
+
+# easyocr guide https://www.analyticsvidhya.com/blog/2021/06/text-detection-from-images-using-easyocr-hands-on-guide/
+def extractDistAziText(fileName):
+    IMAGE_PATH = f"../images/{fileName}.jpg"
+    reader = easyocr.Reader(['en'], gpu=False, verbose=False)
+    result = reader.readtext(IMAGE_PATH, paragraph="False")[0][1]
+    distAzi = re.compile(r'[A-Za-z\. ]+(\d+)m[A-Za-z\. ]+(\d+)')
+    returnResult = distAzi.search(result).groups()
+    return list(map(int, returnResult))
 
 
-# IMAGE_PATH = '../images/test0.png'
-# # Same code here just changing the attribute from ['en'] to ['zh']
-# reader = easyocr.Reader(['en'])
-# result = reader.readtext(IMAGE_PATH, paragraph="False")
-# print(result)
+print(extractDistAziText("test1"))
