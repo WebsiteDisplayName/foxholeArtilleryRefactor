@@ -30,9 +30,11 @@ def findTGSAngle(spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAz
         spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance)
     dST = spotterToTargetDistance
     dSG = spotterToGunDistance
-
-    aTGS = math.degrees(math.acos((dGT**2 + dSG**2 - dST**2)/(2*dGT*dSG)))
-    return aTGS
+    try:
+        aTGS = math.degrees(math.acos((dGT**2 + dSG**2 - dST**2)/(2*dGT*dSG)))
+        return aTGS
+    except:
+        return 0
 
 
 def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance):
@@ -43,7 +45,9 @@ def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spot
     aziSG = spotterToGunAzimuth
     aziST = spotterToTargetAzimuth
 
-    if (aziSG >= 180) and (aziST < 180) and (aziSG - 180 > aziST):
+    if aTGS == 0:
+        return spotterToTargetAzimuth
+    elif (aziSG >= 180) and (aziST < 180) and (aziSG - 180 > aziST):
         result = (aziSG - 180) - aTGS
         if result < 0:
             return (result + 360)
@@ -117,4 +121,11 @@ def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spot
 
 
 if __name__ == "__main__":
+    # tempVar = findDistanceGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance)
+    # tempVar2 = findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance)
+    tempVar = findDistanceGunToTarget(153, 180, 0, 0)
+    # tempVar2 = findAzimuthGunToTarget(323.13, 5, 270, 3)
+    tempVar2 = findAzimuthGunToTarget(323.13, 5, 270, 0)
+    print(tempVar)
+    print(tempVar2)
     pass
