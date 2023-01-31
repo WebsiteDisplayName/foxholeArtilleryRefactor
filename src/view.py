@@ -27,8 +27,11 @@ def add_guns():
     #     dpg.add_button(label="fishsticks")
     # dpg.add_table_row(label=f"Gun {counter}",
     #                   before="gun_table", tag=f"new_gun{counter}")
-    new_button = dpg.add_table_row(
-        label=f"Gun {counter}", before="gun_table", tag=f"new_gun{counter}")
+    # new_button = dpg.add_table_row(
+    #     label=f"Gun {counter}", before="gun_table", tag=f"new_gun{counter}")
+    with dpg.table_row(parent="gun_table"):
+        for j in range(0, 7):
+            dpg.add_text(f"Row{counter} Column{j}")
 
 
 def delete_guns():
