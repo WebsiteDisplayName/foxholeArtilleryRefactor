@@ -20,9 +20,9 @@ import re
 def screenshotMouseArea(fileName, left=-38, top=14, width=74, height=40):
     # left, top, width, height
     x, y = pyautogui.position()
-    positionStr = 'X: ' + str(x).rjust(4) + ' Y: ' + str(y).rjust(4)
-    print(positionStr, end='')
-    print('\b' * len(positionStr), end='', flush=True)
+    # positionStr = 'X: ' + str(x).rjust(4) + ' Y: ' + str(y).rjust(4)
+    # print(positionStr, end='')
+    # print('\b' * len(positionStr), end='', flush=True)
 
     # adjust coords
     left += x
