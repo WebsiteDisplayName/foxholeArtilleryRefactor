@@ -22,6 +22,14 @@ class firingSolution:
     windForce = 1
     weaponType = 1  # 120mm & 150mm
 
+    def recalcGunToTarget(self):
+        gttArr = cH.comprehensiveSpotterArtillery(self.spotterToTargetAzimuth, self.spotterToTargetDistance,
+                                                  self.spotterToGunAzimuth, self.spotterToGunDistance, self.windAzimuth, self.windForce, self.weaponType)
+        self.unadjustedGunToTargetAzimuth = gttArr[0]
+        self.unadjustedGunToTargetDistance = gttArr[1]
+        self.adjustedGunToTargetAzimuth = gttArr[2]
+        self.adjustedGunToTargetDist = gttArr[3]
+
     def spotterSwitch(self):
         if self.spotter == False:
             self.spotter = True
@@ -46,9 +54,6 @@ class firingSolution:
     def updateSpotterToGun(self, arr):
         self.spotterToGunAzimuth = arr[0]
         self.spotterToGunDistance = arr[1]
-
-    def updateGunToTarget():
-        cH.comprehensiveSpotterArtillery(self.spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance, windAzimuth, windForce, weaponType):
 
 
 if __name__ == "__main__":
