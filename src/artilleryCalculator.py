@@ -16,7 +16,7 @@ class firingSolution:
     unadjustedGunToTargetAzimuth = 0
     unadjustedGunToTargetDistance = 0
     adjustedGunToTargetAzimuth = 0
-    adjustedGunToTargetDist = 0
+    adjustedGunToTargetDistance = 0
 
     windAzimuth = 0
     windForce = 1
@@ -28,7 +28,7 @@ class firingSolution:
         self.unadjustedGunToTargetAzimuth = gttArr[0]
         self.unadjustedGunToTargetDistance = gttArr[1]
         self.adjustedGunToTargetAzimuth = gttArr[2]
-        self.adjustedGunToTargetDist = gttArr[3]
+        self.adjustedGunToTargetDistance = gttArr[3]
 
     def spotterSwitch(self):
         if self.spotter == False:
@@ -44,16 +44,6 @@ class firingSolution:
 
     def updateWeapon(self, weaponType):  # wt = 1-3
         self.weaponType = weaponType
-
-    # use with ocr.extractAziDistText
-    def updateSpotterToTarget(self, arr):
-        self.spotterToTargetAzimuth = arr[0]
-        self.spotterToTargetDistance = arr[1]
-
-    # use with ocr.extractAziDistText
-    def updateSpotterToGun(self, arr):
-        self.spotterToGunAzimuth = arr[0]
-        self.spotterToGunDistance = arr[1]
 
 
 if __name__ == "__main__":

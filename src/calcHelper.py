@@ -73,7 +73,6 @@ def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spot
             return (result - 360)
         else:
             return result
-
     elif (aziSG < 180) and (aziST >= 180) and (aziSG + 180 < aziST):
         result = (aziSG + 180) + aTGS
         if result < 0:
@@ -119,11 +118,12 @@ def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spot
         else:
             return result
 
-
 # weapon type
     # 1 = normal artillery (i.e. 120mm & 150mm)
     # 2 = storm cannon (i.e. 300mm)
     # 3 = mortars
+
+
 def findWindAdjustedGunToTargetAziDist(unadjustedGunToTargetAzimuth, unadjustedGunToTargetDistance, windAzimuth, windForce, weaponType):
     # target takes the spotter role in the triangle calculation
     # adjustedTarget takes the role of target in the triangle calculation

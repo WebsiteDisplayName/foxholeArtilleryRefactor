@@ -7,12 +7,50 @@ import dearpygui.dearpygui as dpg
 dpg.create_context()
 
 # https://dearpygui.readthedocs.io/en/latest/documentation/item-creation.html
-
-
+# https://dearpygui.readthedocs.io/en/latest/tutorials/item-usage.html?highlight=current%20widget set values
+# https://dearpygui.readthedocs.io/en/latest/documentation/item-callbacks.html
 # https://dearpygui.readthedocs.io/en/latest/documentation/tables.html
 global gunCounter
 gunCounter = 0
 firingSolutionDict = {}
+
+
+def updateFiringSolution(sender, app_data, user_data):
+    varToChange = user_data[1]
+    if varToChange == 2:  # distST
+        firingSolutionDict[user_data[0]].spotterToTargetDistance = app_data
+    elif varToChange == 3:  # aziST
+        firingSolutionDict[user_data[0]
+                           ].spotterToTargetAzimuth = app_data % 360
+    elif varToChange == 4:  # distSG
+        firingSolutionDict[user_data[0]].spotterToGunDistance = app_data
+    elif varToChange == 5:  # aziSG
+        firingSolutionDict[user_data[0]].spotterToGunAzimuth = app_data % 360
+    elif varToChange == 6:
+        weaponList = ["120mm & 150mm", "Storm cannon", "Mortars"]
+        weaponNum = weaponList.index(app_data) + 1
+        for key, fs in firingSolutionDict.items():
+            fs.weaponType = int(weaponNum)
+            fs.recalcGunToTarget()
+            dpg.set_value(
+                f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
+            dpg.set_value(
+                f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
+        return
+    elif varToChange == 7:  # weapon type
+        for key, fs in firingSolutionDict.items():
+            fs.windForce = int(app_data)
+            fs.recalcGunToTarget()
+            dpg.set_value(
+                f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
+            dpg.set_value(
+                f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
+        return
+    firingSolutionDict[user_data[0]].recalcGunToTarget()
+    dpg.set_value(
+        f"{user_data[0]}6", f"{firingSolutionDict[user_data[0]].adjustedGunToTargetDistance:.2f}")
+    dpg.set_value(
+        f"{user_data[0]}7", f"{firingSolutionDict[user_data[0]].adjustedGunToTargetAzimuth:.2f}")
 
 
 def add_guns():
@@ -21,20 +59,18 @@ def add_guns():
     newFS = aC.firingSolution()
     firingSolutionDict[gunCounter] = newFS
     with dpg.table_row(parent="gun_table", tag=f"new_gun{gunCounter}"):
-        dpg.add_text(label=f"##{gunCounter}1",
-                     default_value=f"Gun {gunCounter}")  # Name
-        dpg.add_input_int(label=f"##{gunCounter}2",
-                          default_value=newFS.spotterToTargetDistance, step=0, step_fast=0)  # distST
-        dpg.add_input_int(label=f"##{gunCounter}3",
-                          default_value=newFS.spotterToTargetAzimuth, step=0, step_fast=0)  # aziST
-        dpg.add_input_int(label=f"##{gunCounter}4",
-                          default_value=newFS.spotterToGunDistance, step=0, step_fast=0)  # distSG
-        dpg.add_input_int(label=f"##{gunCounter}5",
-                          default_value=newFS.spotterToGunAzimuth, step=0, step_fast=0)  # aziSG
-        dpg.add_input_int(label=f"##{gunCounter}6",
-                          default_value=newFS.adjustedGunToTargetDist, step=0, step_fast=0)  # adjDistGT
-        dpg.add_input_int(label=f"##{gunCounter}7",
-                          default_value=newFS.adjustedGunToTargetAzimuth, step=0, step_fast=0)  # adjAziGT
+        dpg.add_input_text(tag=f"{gunCounter}1",
+                           default_value=f"Gun {gunCounter}", width=80)  # Name
+        dpg.add_input_int(tag=f"{gunCounter}2",
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 2], width=80)  # distST
+        dpg.add_input_int(tag=f"{gunCounter}3",
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 3], width=80)  # aziST
+        dpg.add_input_int(tag=f"{gunCounter}4",
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 4], width=80)  # distSG
+        dpg.add_input_int(tag=f"{gunCounter}5",
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 5], width=80)  # aziSG
+        dpg.add_text(tag=f"{gunCounter}6", default_value=0)  # adjDistGT
+        dpg.add_text(tag=f"{gunCounter}7", default_value=0)  # adjAziGT
 
 
 def delete_guns():
@@ -50,6 +86,12 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_button(label="Add Guns", callback=add_guns)
         dpg.add_button(label="Delete Guns",
                        callback=delete_guns, tag="delete_gun")
+        dpg.add_combo(tag="weaponDropdown", items=["120mm & 150mm", "Storm cannon",
+                      "Mortars"], default_value="120mm & 150mm", callback=updateFiringSolution, user_data=["global", 6], width=120)
+
+        dpg.add_text(default_value="Wind Force")
+        dpg.add_combo(tag="windForceDropdown", items=[1, 2, 3], default_value=1,
+                      callback=updateFiringSolution, user_data=["global", 7], width=30)
 
     with dpg.table(tag="gun_table", header_row=True):
         dpg.add_table_column(label="Name")
@@ -59,6 +101,7 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="aziSG")
         dpg.add_table_column(label="adjDistGT")
         dpg.add_table_column(label="adjAziGT")
+
 
 dpg.create_viewport(title='Artillery Calculator', width=600, height=400)
 dpg.setup_dearpygui()
