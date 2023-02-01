@@ -9,36 +9,40 @@ dpg.create_context()
 # https://dearpygui.readthedocs.io/en/latest/documentation/item-creation.html
 
 
-global counter
-counter = 0
-
-firingSolutionDict = {}
-
 # https://dearpygui.readthedocs.io/en/latest/documentation/tables.html
+global gunCounter
+gunCounter = 0
+firingSolutionDict = {}
 
 
 def add_guns():
-    global counter
-    counter += 1
-    # new_button = dpg.add_button(
-    #     label=f"Gun {counter}", before="gun_table", tag=f"new_gun{counter}")
-    # with dpg.table_row(
-    #         label=f"Gun {counter}", parent="gun_table", tag=f"new_gun{counter}"):
-    #     dpg.add_button(label="fishsticks")
-    # dpg.add_table_row(label=f"Gun {counter}",
-    #                   before="gun_table", tag=f"new_gun{counter}")
-    # new_button = dpg.add_table_row(
-    #     label=f"Gun {counter}", before="gun_table", tag=f"new_gun{counter}")
-    with dpg.table_row(parent="gun_table"):
-        for j in range(0, 7):
-            dpg.add_text(f"Row{counter} Column{j}")
+    global gunCounter
+    gunCounter += 1
+    newFS = aC.firingSolution()
+    firingSolutionDict[gunCounter] = newFS
+    with dpg.table_row(parent="gun_table", tag=f"new_gun{gunCounter}"):
+        dpg.add_text(label=f"##{gunCounter}1",
+                     default_value=f"Gun {gunCounter}")  # Name
+        dpg.add_input_int(label=f"##{gunCounter}2",
+                          default_value=newFS.spotterToTargetDistance, step=0, step_fast=0)  # distST
+        dpg.add_input_int(label=f"##{gunCounter}3",
+                          default_value=newFS.spotterToTargetAzimuth, step=0, step_fast=0)  # aziST
+        dpg.add_input_int(label=f"##{gunCounter}4",
+                          default_value=newFS.spotterToGunDistance, step=0, step_fast=0)  # distSG
+        dpg.add_input_int(label=f"##{gunCounter}5",
+                          default_value=newFS.spotterToGunAzimuth, step=0, step_fast=0)  # aziSG
+        dpg.add_input_int(label=f"##{gunCounter}6",
+                          default_value=newFS.adjustedGunToTargetDist, step=0, step_fast=0)  # adjDistGT
+        dpg.add_input_int(label=f"##{gunCounter}7",
+                          default_value=newFS.adjustedGunToTargetAzimuth, step=0, step_fast=0)  # adjAziGT
 
 
 def delete_guns():
-    global counter
-    if counter >= 1:
-        dpg.delete_item(f"new_gun{counter}")
-        counter -= 1
+    global gunCounter
+    if gunCounter >= 1:
+        dpg.delete_item(f"new_gun{gunCounter}")
+        del firingSolutionDict[gunCounter]
+        gunCounter -= 1
 
 
 with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
