@@ -46,7 +46,7 @@ def extractAziDistText(fileName):
         result = reader.readtext(IMAGE_PATH, paragraph="False")[0][1]
         aziDist = re.compile(r'[A-Za-z\. ]+(\d+)m[A-Za-z\. ]+(\d+)')
         returnResult = aziDist.search(result).groups()
-        return list(map(int, returnResult))[::-1]
+        return list(map(int, returnResult))
     except:
         return [0, 0]
 
