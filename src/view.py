@@ -14,6 +14,8 @@ global gunCounter
 gunCounter = 0
 firingSolutionDict = {}
 
+# wind azimuth is direction it is going towards, 0 = wind is blowing North
+
 
 def updateFiringSolution(sender, app_data, user_data):
     varToChange = user_data[1]
@@ -26,7 +28,7 @@ def updateFiringSolution(sender, app_data, user_data):
         firingSolutionDict[user_data[0]].spotterToGunDistance = app_data
     elif varToChange == 5:  # aziSG
         firingSolutionDict[user_data[0]].spotterToGunAzimuth = app_data % 360
-    elif varToChange == 6:
+    elif varToChange == 6:  # weapon type
         weaponList = ["120mm & 150mm", "Storm cannon", "Mortars"]
         weaponNum = weaponList.index(app_data) + 1
         for key, fs in firingSolutionDict.items():
@@ -37,9 +39,18 @@ def updateFiringSolution(sender, app_data, user_data):
             dpg.set_value(
                 f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
         return
-    elif varToChange == 7:  # weapon type
+    elif varToChange == 7:  # wind force
         for key, fs in firingSolutionDict.items():
             fs.windForce = int(app_data)
+            fs.recalcGunToTarget()
+            dpg.set_value(
+                f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
+            dpg.set_value(
+                f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
+        return
+    elif varToChange == 8:  # wind azimuth
+        for key, fs in firingSolutionDict.items():
+            fs.windAzimuth = int(app_data)
             fs.recalcGunToTarget()
             dpg.set_value(
                 f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
@@ -92,6 +103,9 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_text(default_value="Wind Force")
         dpg.add_combo(tag="windForceDropdown", items=[1, 2, 3], default_value=1,
                       callback=updateFiringSolution, user_data=["global", 7], width=30)
+        dpg.add_text(default_value="Wind Azi")
+        dpg.add_input_int(tag="windAziDropdown",
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=["global", 8], width=30)
 
     with dpg.table(tag="gun_table", header_row=True):
         dpg.add_table_column(label="Name")

@@ -153,6 +153,10 @@ def findWindAdjustedGunToTargetAziDist(unadjustedGunToTargetAzimuth, unadjustedG
         oppositeWindAzimuth, windForceMetersArray[windForce-1], targetToGunAzimuth, unadjustedGunToTargetDistance)
     adjustedGunToTargetDist = findDistanceGunToTarget(
         oppositeWindAzimuth, windForceMetersArray[windForce-1], targetToGunAzimuth, unadjustedGunToTargetDistance)
+
+    if windForceMetersArray[windForce-1] == 0:  # I changed this
+        adjustedGunToTargetAzimuth = unadjustedGunToTargetAzimuth
+
     return [unadjustedGunToTargetAzimuth, unadjustedGunToTargetDistance, adjustedGunToTargetAzimuth, adjustedGunToTargetDist]
 
 

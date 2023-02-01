@@ -6,7 +6,6 @@ import calcHelper as cH
 class firingSolution:
     # set wind & weapon type values to global?, when they change, change all firingSolution object instance variables too?
     # class variables are default variables, change through function
-    spotter = False
 
     spotterToTargetAzimuth = 0
     spotterToTargetDistance = 0
@@ -29,21 +28,6 @@ class firingSolution:
         self.unadjustedGunToTargetDistance = gttArr[1]
         self.adjustedGunToTargetAzimuth = gttArr[2]
         self.adjustedGunToTargetDistance = gttArr[3]
-
-    def spotterSwitch(self):
-        if self.spotter == False:
-            self.spotter = True
-        else:
-            self.spotter = False
-            self.spotterToGunAzimuth = 0
-            self.spotterToGunDistance = 0
-
-    def updateWind(self, windAzimuth, windForce):  # wf = 1-3
-        self.windAzimuth = windAzimuth
-        self.windForce = windForce
-
-    def updateWeapon(self, weaponType):  # wt = 1-3
-        self.weaponType = weaponType
 
 
 if __name__ == "__main__":
