@@ -4,6 +4,7 @@ import artilleryCalculator as aC
 import calcHelper as cH
 import dearpygui.dearpygui as dpg
 import controller as cT
+from dearpygui_ext.themes import create_theme_imgui_dark
 
 dpg.create_context()
 
@@ -50,11 +51,18 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
             dpg.add_button(tag=f"spotterChangeButton",  # clicking prompts are you sure you want to recalculate sg?
                            label="WARNING", width=80, callback=cT.recalculateSGValues)
 
-            # ^ doesnt have callback, merely stores values, following buttons have callback ^ get ^ value & run func
+# themes https://github.com/hoffstadt/DearPyGui_Ext
+# https://github.com/hoffstadt/DearPyGui/discussions/1636
+# https://github.com/hoffstadt/DearPyGui_Ext/blob/master/dearpygui_ext/themes.py
+# change color of viewport (top border of window) window title bar
+    # dark_theme = create_theme_imgui_dark()
+    # dpg.bind_theme(dark_theme)
 
 dpg.create_viewport(title='Artillery Calculator', width=600, height=400)
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.set_primary_window("Primary Window", True)
 dpg.start_dearpygui()
+# insert stuff here, viz while loop for ocr https://stackoverflow.com/questions/65057228/python-keyboard-module-wait-for-user
+
 dpg.destroy_context()

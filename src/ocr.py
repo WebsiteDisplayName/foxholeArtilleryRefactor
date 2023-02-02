@@ -51,6 +51,11 @@ def extractAziDistText(fileName):
         return [0, 0]
 
 
+def screepCapExtract(filename):
+    screenshotMouseArea(filename)
+    return extractAziDistText(filename)
+
+
 if __name__ == '__main__':
 
     # https://github.com/boppreh/keyboard#api
