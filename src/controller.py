@@ -114,13 +114,13 @@ def recalculateSGValues():
                 refKey = key
         # calculating everything relative to the chosen refGunName, azimuth is traveling from ref to curr
         oldRefSGDist = firingSolutionDict[refKey].spotterToGunDistance
-        oldRefSGAzi = firingSolutionDict[refKey].spotterToGunDistance
+        oldRefSGAzi = firingSolutionDict[refKey].spotterToGunAzimuth
         for key, val in firingSolutionDict.items():
             if val.gunName == refGunName:
                 continue
             # spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance
-            currSGDist = firingSolutionDict[refKey].spotterToGunDistance
-            currSGAzi = firingSolutionDict[refKey].spotterToGunAzimuth
+            currSGDist = firingSolutionDict[key].spotterToGunDistance
+            currSGAzi = firingSolutionDict[key].spotterToGunAzimuth
             refToCurrAzi = cH.findAzimuthGunToTarget(
                 currSGAzi, currSGDist, oldRefSGAzi, oldRefSGDist)
             refToCurrDist = cH.findDistanceGunToTarget(
@@ -147,9 +147,6 @@ def recalculateSGValues():
         dpg.set_value(
             f"{key}7", float(f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}"))
 
-
-def hotkeyListener():
-    keyboard.read_key()
 
 # type is "target" or "gun"
     # shift is target, ctrl is gun (every screencap gets dist & azi)

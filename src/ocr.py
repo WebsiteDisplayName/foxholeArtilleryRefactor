@@ -52,7 +52,6 @@ def extractAziDistText(fileName):
 
 
 def screepCapExtract(filename):
-    print("fish")  # I changed this
     screenshotMouseArea(filename)
     return extractAziDistText(filename)
 
