@@ -16,6 +16,8 @@ def updateFiringSolution(sender, app_data, user_data):
     varToChange = user_data[1]
     if varToChange == 1:  # gun name I changed this
         firingSolutionDict[user_data[0]].gunName = app_data
+        dpg.configure_item("spotterPosDropdown", items=[
+            firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
     elif varToChange == 2:  # distST
         firingSolutionDict[user_data[0]].spotterToTargetDistance = app_data
     elif varToChange == 3:  # aziST
@@ -81,6 +83,8 @@ def add_guns():
         dpg.add_text(tag=f"{gunCounter}7", default_value=0)  # adjAziGT
     # I changed this
     firingSolutionDict[gunCounter].gunName = f"Gun {gunCounter}"
+    dpg.configure_item("spotterPosDropdown", items=[
+        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
 
 
 def delete_guns():
@@ -89,3 +93,5 @@ def delete_guns():
         dpg.delete_item(f"new_gun{gunCounter}")
         del firingSolutionDict[gunCounter]
         gunCounter -= 1
+    dpg.configure_item("spotterPosDropdown", items=[
+        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])

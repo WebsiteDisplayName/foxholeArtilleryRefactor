@@ -9,7 +9,7 @@ dpg.create_context()
 
 
 with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
-    with dpg.menu_bar():
+    with dpg.menu_bar(tag="mainMenuBar"):
         dpg.add_button(label="Add Guns", callback=cT.add_guns)
         dpg.add_button(label="Delete Guns",
                        callback=cT.delete_guns, tag="delete_gun")
@@ -32,11 +32,18 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="adjDistGT")
         dpg.add_table_column(label="adjAziGT")
 
-#  I changed this: gun to change dropdown, new SG dist, new SG azi, button to trigger recalc callback for all firing solution SG values
-    # with dpg.menu_bar(tag="spotterPosChangeMenuBar"):
-    #     dpg.add_button(label="Add Guns")
-        # dpg.add_combo(tag="spotterPosDropdown", items=[
-        #               cT.firingSolutionDict[key].gunName for key, val in cT.firingSolutionDict.items()])
+# https://www.reddit.com/r/DearPyGui/comments/iibfo8/how_to_dynamically_change_comboboxlistbox_items/
+# add_loading_indicator
+# configure_item
+    with dpg.table(tag="spotterChangeTable", header_row=True):
+        dpg.add_table_column(label="Ref. Gun Name")
+        dpg.add_table_column(label="distSG")
+        dpg.add_table_column(label="aziSG")
+        dpg.add_table_column(label="Calc. Int.")
+        dpg.add_table_column(label="Recalc. SG")
+        with dpg.table_row(tag=f"spotterRow"):
+            dpg.add_combo(tag="spotterPosDropdown",
+                          parent="spotterRow", items=[])
 
 dpg.create_viewport(title='Artillery Calculator', width=600, height=400)
 dpg.setup_dearpygui()
