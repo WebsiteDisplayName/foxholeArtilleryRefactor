@@ -95,3 +95,17 @@ def delete_guns():
         gunCounter -= 1
     dpg.configure_item("spotterPosDropdown", items=[
         firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+
+
+def recalculateSGValues():
+    refGunName = dpg.get_value("spotterPosDropdown")
+    newRefDistSG = dpg.get_value("spotterGunDistChange")
+    newRefAziSG = dpg.get_value("spotterGunAziChange")
+    # calculate internal gun relationships with respect to the refGunName chosen with historical values then recalculate updated SG and update
+    if len(firingSolutionDict) >= 2:
+        refKey = -1
+        for key, val in firingSolutionDict.items():  # find key of chosen refGunName
+            if val.gunName == refGunName:
+                refKey = key
+
+        for key, val in firingSolutionDict.items():

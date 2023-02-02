@@ -39,11 +39,18 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="Ref. Gun Name")
         dpg.add_table_column(label="distSG")
         dpg.add_table_column(label="aziSG")
-        dpg.add_table_column(label="Calc. Int.")
         dpg.add_table_column(label="Recalc. SG")
         with dpg.table_row(tag=f"spotterRow"):
-            dpg.add_combo(tag="spotterPosDropdown",
-                          parent="spotterRow", items=[])
+            dpg.add_combo(tag="spotterPosDropdown",  # firing solution name ref
+                          parent="spotterRow", items=[], width=80)
+            dpg.add_input_int(tag=f"spotterGunDistChange",  # distSG ref
+                              default_value=0, step=0, step_fast=0, width=80)
+            dpg.add_input_int(tag=f"spotterGunAziChange",  # aziSG ref
+                              default_value=0, step=0, step_fast=0, width=80)
+            dpg.add_button(tag=f"spotterChangeButton",  # clicking prompts are you sure you want to recalculate sg?
+                           label="WARNING", width=80, callback=cT.recalculateSGValues)
+
+            # ^ doesnt have callback, merely stores values, following buttons have callback ^ get ^ value & run func
 
 dpg.create_viewport(title='Artillery Calculator', width=600, height=400)
 dpg.setup_dearpygui()
