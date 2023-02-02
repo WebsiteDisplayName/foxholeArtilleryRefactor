@@ -14,7 +14,9 @@ firingSolutionDict = {}
 
 def updateFiringSolution(sender, app_data, user_data):
     varToChange = user_data[1]
-    if varToChange == 2:  # distST
+    if varToChange == 1:  # gun name I changed this
+        firingSolutionDict[user_data[0]].gunName = app_data
+    elif varToChange == 2:  # distST
         firingSolutionDict[user_data[0]].spotterToTargetDistance = app_data
     elif varToChange == 3:  # aziST
         firingSolutionDict[user_data[0]
@@ -45,7 +47,7 @@ def updateFiringSolution(sender, app_data, user_data):
         return
     elif varToChange == 8:  # wind azimuth
         for key, fs in firingSolutionDict.items():
-            fs.windAzimuth = int(app_data)
+            fs.windAzimuth = int(app_data) % 360
             fs.recalcGunToTarget()
             dpg.set_value(
                 f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
@@ -66,7 +68,7 @@ def add_guns():
     firingSolutionDict[gunCounter] = newFS
     with dpg.table_row(parent="gun_table", tag=f"new_gun{gunCounter}"):
         dpg.add_input_text(tag=f"{gunCounter}1",
-                           default_value=f"Gun {gunCounter}", width=80)  # Name
+                           default_value=f"Gun {gunCounter}", callback=updateFiringSolution, user_data=[gunCounter, 1], width=80)  # Name
         dpg.add_input_int(tag=f"{gunCounter}2",
                           default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 2], width=80)  # distST
         dpg.add_input_int(tag=f"{gunCounter}3",
@@ -77,6 +79,8 @@ def add_guns():
                           default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 5], width=80)  # aziSG
         dpg.add_text(tag=f"{gunCounter}6", default_value=0)  # adjDistGT
         dpg.add_text(tag=f"{gunCounter}7", default_value=0)  # adjAziGT
+    # I changed this
+    firingSolutionDict[gunCounter].gunName = f"Gun {gunCounter}"
 
 
 def delete_guns():

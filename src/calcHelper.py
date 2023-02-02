@@ -45,9 +45,17 @@ def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spot
     aziSG = spotterToGunAzimuth
     aziST = spotterToTargetAzimuth
 
-    if aTGS == 0:
-        return spotterToTargetAzimuth
-    elif (aziSG >= 180) and (aziST < 180) and (aziSG - 180 > aziST):
+    if aTGS == 0:  # return backazimuth of spotterToGun
+        if spotterToGunDistance == 0:
+            return spotterToTargetAzimuth
+        elif spotterToTargetAzimuth != spotterToGunAzimuth:
+            return spotterToTargetAzimuth
+        else:
+            if spotterToTargetAzimuth >= 180:
+                return spotterToTargetAzimuth - 180
+            else:
+                return spotterToTargetAzimuth + 180
+    elif (aziSG >= 180) and (aziST <= 180) and (aziSG - 180 > aziST):
         result = (aziSG - 180) - aTGS
         if result < 0:
             return (result + 360)
@@ -56,7 +64,7 @@ def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spot
         else:
             return result
 
-    elif (aziSG >= 180) and (aziST < 180) and (aziSG - 180 < aziST):
+    elif (aziSG >= 180) and (aziST <= 180) and (aziSG - 180 < aziST):
         result = (aziSG - 180) + aTGS
         if result < 0:
             return (result + 360)

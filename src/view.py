@@ -32,6 +32,11 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="adjDistGT")
         dpg.add_table_column(label="adjAziGT")
 
+#  I changed this: gun to change dropdown, new SG dist, new SG azi, button to trigger recalc callback for all firing solution SG values
+    # with dpg.menu_bar(tag="spotterPosChangeMenuBar"):
+    #     dpg.add_button(label="Add Guns")
+        # dpg.add_combo(tag="spotterPosDropdown", items=[
+        #               cT.firingSolutionDict[key].gunName for key, val in cT.firingSolutionDict.items()])
 
 dpg.create_viewport(title='Artillery Calculator', width=600, height=400)
 dpg.setup_dearpygui()
