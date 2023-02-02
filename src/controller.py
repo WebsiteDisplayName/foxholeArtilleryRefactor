@@ -1,5 +1,6 @@
 import dearpygui.dearpygui as dpg
 import artilleryCalculator as aC
+import calcHelper as cH
 
 # https://dearpygui.readthedocs.io/en/latest/documentation/item-creation.html
 # https://dearpygui.readthedocs.io/en/latest/tutorials/item-usage.html?highlight=current%20widget set values
@@ -100,12 +101,46 @@ def delete_guns():
 def recalculateSGValues():
     refGunName = dpg.get_value("spotterPosDropdown")
     newRefDistSG = dpg.get_value("spotterGunDistChange")
-    newRefAziSG = dpg.get_value("spotterGunAziChange")
+    newRefAziSG = dpg.get_value("spotterGunAziChange") % 360
+    newRefAziSGBack = newRefAziSG - 180 if newRefAziSG >= 180 else newRefAziSG + 180
+    # back azimuth
     # calculate internal gun relationships with respect to the refGunName chosen with historical values then recalculate updated SG and update
     if len(firingSolutionDict) >= 2:
         refKey = -1
         for key, val in firingSolutionDict.items():  # find key of chosen refGunName
             if val.gunName == refGunName:
                 refKey = key
-
+        # calculating everything relative to the chosen refGunName, azimuth is traveling from ref to curr
+        oldRefSGDist = firingSolutionDict[refKey].spotterToGunDistance
+        oldRefSGAzi = firingSolutionDict[refKey].spotterToGunDistance
         for key, val in firingSolutionDict.items():
+            if val.gunName == refGunName:
+                continue
+            # spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance
+            currSGDist = firingSolutionDict[refKey].spotterToGunDistance
+            currSGAzi = firingSolutionDict[refKey].spotterToGunAzimuth
+            refToCurrAzi = cH.findAzimuthGunToTarget(
+                currSGAzi, currSGDist, oldRefSGAzi, oldRefSGDist)
+            refToCurrDist = cH.findDistanceGunToTarget(
+                currSGAzi, currSGDist, oldRefSGAzi, oldRefSGDist)
+            newCurrSGAzi = cH.findAzimuthGunToTarget(
+                refToCurrAzi, refToCurrDist, newRefAziSGBack, newRefDistSG)
+            newCurrSGDist = cH.findDistanceGunToTarget(
+                refToCurrAzi, refToCurrDist, newRefAziSGBack, newRefDistSG)
+            firingSolutionDict[key].spotterToGunAzimuth = newCurrSGAzi
+            firingSolutionDict[key].spotterToGunDistance = newCurrSGDist
+    # update ref
+    firingSolutionDict[refKey].spotterToGunAzimuth = newRefAziSG
+    firingSolutionDict[refKey].spotterToGunDistance = newRefDistSG
+
+    # update view, does setting value trigger callback?
+    for key, fs in firingSolutionDict.items():
+        fs.recalcGunToTarget()
+        dpg.set_value(
+            f"{key}4", f"{firingSolutionDict[key].spotterToGunDistance:.2f}")
+        dpg.set_value(
+            f"{key}5", f"{firingSolutionDict[key].spotterToGunAzimuth:.2f}")
+        dpg.set_value(
+            f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
+        dpg.set_value(
+            f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
