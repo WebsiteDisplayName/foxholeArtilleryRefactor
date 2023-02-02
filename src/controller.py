@@ -137,10 +137,10 @@ def recalculateSGValues():
     for key, fs in firingSolutionDict.items():
         fs.recalcGunToTarget()
         dpg.set_value(
-            f"{key}4", f"{firingSolutionDict[key].spotterToGunDistance:.2f}")
+            f"{key}4", float(f"{firingSolutionDict[key].spotterToGunDistance:.2f}"))
         dpg.set_value(
-            f"{key}5", f"{firingSolutionDict[key].spotterToGunAzimuth:.2f}")
+            f"{key}5", float(f"{firingSolutionDict[key].spotterToGunAzimuth:.2f}"))
         dpg.set_value(
-            f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
+            f"{key}6", float(f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}"))
         dpg.set_value(
-            f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
+            f"{key}7", float(f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}"))

@@ -117,7 +117,7 @@ def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spot
         else:
             return result
 
-    elif (aziSG < 180) and (aziST < 180) and (aziSG < aziST):
+    elif (aziSG < 180) and (aziST < 180) and (aziSG <= aziST):
         result = (aziSG + 180) - aTGS
         if result < 0:
             return (result + 360)
@@ -125,6 +125,13 @@ def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spot
             return (result - 360)
         else:
             return result
+    # else:
+    #     print("fish taco")
+    #     print("spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance, aTGS")
+    #     print(spotterToTargetAzimuth, spotterToTargetDistance,
+    #           spotterToGunAzimuth, spotterToGunDistance, aTGS)
+    #     return spotterToTargetAzimuth
+    #     # 0 500 0 50.0 180.0
 
 # weapon type
     # 1 = normal artillery (i.e. 120mm & 150mm)
