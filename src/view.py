@@ -63,7 +63,6 @@ dpg.create_viewport(title='Artillery Calculator', width=600, height=400)
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.set_primary_window("Primary Window", True)
+cT.setHotkeys() # insert hotkeys https://stackoverflow.com/questions/65057228/python-keyboard-module-wait-for-user
 dpg.start_dearpygui()
-# insert stuff here, viz while loop for ocr https://stackoverflow.com/questions/65057228/python-keyboard-module-wait-for-user
-# keyboard.add_hotkey
 dpg.destroy_context()

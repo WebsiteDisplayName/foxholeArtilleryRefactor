@@ -153,10 +153,24 @@ def hotkeyListener():
 
 # type is "target" or "gun"
     # shift is target, ctrl is gun (every screencap gets dist & azi)
+# def fish():
+#     keyboard.add_hotkey(f"shift+{1}", lambda: print(1, "target"))
+#     keyboard.add_hotkey(f"ctrl+{1}", lambda: print(1, "gun"))
+def setHotkeys():
+        keyboard.add_hotkey(f"shift+1", lambda: updateFSByScreenCap(1,"target")) #spotterToTarget: dist and azi
+        keyboard.add_hotkey(f"ctrl+1", lambda: updateFSByScreenCap(1,"gun")) #spotterToGun: dist and azi
+        keyboard.add_hotkey(f"shift+2", lambda: updateFSByScreenCap(2,"target"))
+        keyboard.add_hotkey(f"ctrl+2", lambda: updateFSByScreenCap(2,"gun"))
+        keyboard.add_hotkey(f"shift+3", lambda: updateFSByScreenCap(3,"target"))
+        keyboard.add_hotkey(f"ctrl+3", lambda: updateFSByScreenCap(3,"gun"))
+        keyboard.add_hotkey(f"shift+4", lambda: updateFSByScreenCap(4,"target"))
+        keyboard.add_hotkey(f"ctrl+4", lambda: updateFSByScreenCap(4,"gun"))
+        keyboard.add_hotkey(f"shift+5", lambda: updateFSByScreenCap(5,"target"))
+        keyboard.add_hotkey(f"ctrl+5", lambda: updateFSByScreenCap(5,"gun"))
 
 
 def updateFSByScreenCap(key, type):
-    try:
+    if key in firingSolutionDict:
         if type == "target":
             capDist, capAzi = ocr.screepCapExtract("target")
             firingSolutionDict[key].spotterToTargetDistance = capDist
@@ -179,12 +193,12 @@ def updateFSByScreenCap(key, type):
             f"{key}6", float(f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}"))
         dpg.set_value(
             f"{key}7", float(f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}"))
-    except:
+    else:
         return
 
 
-# keyboard.add_hotkey("shift+1", updateFSByScreenCap(1, "target"))
-# keyboard.add_hotkey("ctrl+1", updateFSByScreenCap(1, "gun"))
-
 if __name__ == "__main__":
+
+    keyboard.add_hotkey("shift+1", updateFSByScreenCap(), args=(1, "target"))
+    keyboard.add_hotkey("ctrl+1", updateFSByScreenCap(), args=(1, "gun"))
     pass

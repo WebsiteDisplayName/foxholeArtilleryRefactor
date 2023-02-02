@@ -42,7 +42,7 @@ def screenshotMouseArea(fileName, left=-38, top=14, width=74, height=40):
 def extractAziDistText(fileName):
     try:
         IMAGE_PATH = f"../images/{fileName}.jpg"
-        reader = easyocr.Reader(['en'], gpu=False, verbose=False)
+        reader = easyocr.Reader(['en'], verbose=False)
         result = reader.readtext(IMAGE_PATH, paragraph="False")[0][1]
         aziDist = re.compile(r'[A-Za-z\. ]+(\d+)m[A-Za-z\. ]+(\d+)')
         returnResult = aziDist.search(result).groups()
@@ -52,6 +52,7 @@ def extractAziDistText(fileName):
 
 
 def screepCapExtract(filename):
+    print("fish")  # I changed this
     screenshotMouseArea(filename)
     return extractAziDistText(filename)
 
