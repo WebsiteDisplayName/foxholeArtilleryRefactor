@@ -5,7 +5,7 @@ import calcHelper as cH
 import dearpygui.dearpygui as dpg
 import controller as cT
 from dearpygui_ext.themes import create_theme_imgui_dark
-
+import keyboard
 dpg.create_context()
 
 
@@ -58,11 +58,12 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
     # dark_theme = create_theme_imgui_dark()
     # dpg.bind_theme(dark_theme)
 
+
 dpg.create_viewport(title='Artillery Calculator', width=600, height=400)
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.set_primary_window("Primary Window", True)
 dpg.start_dearpygui()
 # insert stuff here, viz while loop for ocr https://stackoverflow.com/questions/65057228/python-keyboard-module-wait-for-user
-
+# keyboard.add_hotkey
 dpg.destroy_context()

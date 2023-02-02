@@ -1,6 +1,8 @@
 import dearpygui.dearpygui as dpg
 import artilleryCalculator as aC
 import calcHelper as cH
+import keyboard
+import ocr
 
 # https://dearpygui.readthedocs.io/en/latest/documentation/item-creation.html
 # https://dearpygui.readthedocs.io/en/latest/tutorials/item-usage.html?highlight=current%20widget set values
@@ -144,3 +146,45 @@ def recalculateSGValues():
             f"{key}6", float(f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}"))
         dpg.set_value(
             f"{key}7", float(f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}"))
+
+
+def hotkeyListener():
+    keyboard.read_key()
+
+# type is "target" or "gun"
+    # shift is target, ctrl is gun (every screencap gets dist & azi)
+
+
+def updateFSByScreenCap(key, type):
+    try:
+        if type == "target":
+            capDist, capAzi = ocr.screepCapExtract("target")
+            firingSolutionDict[key].spotterToTargetDistance = capDist
+            firingSolutionDict[key].spotterToTargetAzimuth = capAzi
+            dpg.set_value(
+                f"{key}2", float(f"{firingSolutionDict[key].spotterToTargetDistance:.2f}"))
+            dpg.set_value(
+                f"{key}3", float(f"{firingSolutionDict[key].spotterToTargetAzimuth:.2f}"))
+        else:
+            capDist, capAzi = ocr.screepCapExtract("gun")
+            firingSolutionDict[key].spotterToGunDistance = capDist
+            firingSolutionDict[key].spotterToGunAzimuth = capAzi
+            dpg.set_value(
+                f"{key}4", float(f"{firingSolutionDict[key].spotterToGunDistance:.2f}"))
+            dpg.set_value(
+                f"{key}5", float(f"{firingSolutionDict[key].spotterToGunAzimuth:.2f}"))
+
+        firingSolutionDict[key].recalcGunToTarget()
+        dpg.set_value(
+            f"{key}6", float(f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}"))
+        dpg.set_value(
+            f"{key}7", float(f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}"))
+    except:
+        return
+
+
+# keyboard.add_hotkey("shift+1", updateFSByScreenCap(1, "target"))
+# keyboard.add_hotkey("ctrl+1", updateFSByScreenCap(1, "gun"))
+
+if __name__ == "__main__":
+    pass
