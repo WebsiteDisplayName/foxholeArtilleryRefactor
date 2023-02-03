@@ -196,7 +196,7 @@ def updateFSByScreenCap(key, type):
                 f"{key}2", float(f"{firingSolutionDict[key].spotterToTargetDistance:.2f}"))
             dpg.set_value(
                 f"{key}3", float(f"{firingSolutionDict[key].spotterToTargetAzimuth:.2f}"))
-        else:
+        elif type == "gun":
             capDist, capAzi = ocr.screepCapExtract("gun")
             firingSolutionDict[key].spotterToGunDistance = capDist
             firingSolutionDict[key].spotterToGunAzimuth = capAzi
