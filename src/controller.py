@@ -55,24 +55,24 @@ def updateFiringSolution(sender, app_data, user_data):
 def setValues(key,type): #key is key from dictionary, type = [adjusted, target, gun]
     if type == "target":
         dpg.set_value(
-            f"{key}2", f"{firingSolutionDict[key].spotterToTargetDistance:.2f}")
+            f"{key}2", round(firingSolutionDict[key].spotterToTargetDistance,2))
         dpg.set_value(
-            f"{key}3", f"{firingSolutionDict[key].spotterToTargetAzimuth:.2f}")
+            f"{key}3", round(firingSolutionDict[key].spotterToTargetAzimuth,2))
     elif type == "gun":
         dpg.set_value(
-            f"{key}4", f"{firingSolutionDict[key].spotterToGunDistance:.2f}")
+            f"{key}4", round(firingSolutionDict[key].spotterToGunDistance,2))
         dpg.set_value(
-            f"{key}5", f"{firingSolutionDict[key].spotterToGunAzimuth:.2f}")
+            f"{key}5", round(firingSolutionDict[key].spotterToGunAzimuth,2))
     elif type == "adjusted":
         firingSolutionDict[key].recalcGunToTarget()
         dpg.set_value(
-            f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
+            f"{key}6", round(firingSolutionDict[key].adjustedGunToTargetDistance,2))
         dpg.set_value(
-            f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
+            f"{key}7", round(firingSolutionDict[key].adjustedGunToTargetAzimuth,2))
         dpg.set_value(
-            f"{key}8", f"{firingSolutionDict[key].oldAdjustedGunToTargetDistance:.2f}")
+            f"{key}8", round(firingSolutionDict[key].oldAdjustedGunToTargetDistance,2))
         dpg.set_value(
-            f"{key}9", f"{firingSolutionDict[key].oldAdjustedGunToTargetAzimuth:.2f}")
+            f"{key}9", round(firingSolutionDict[key].oldAdjustedGunToTargetAzimuth,2))
 
 
 def add_guns():
