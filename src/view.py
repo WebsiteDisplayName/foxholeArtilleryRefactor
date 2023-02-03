@@ -38,6 +38,22 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
 # https://www.reddit.com/r/DearPyGui/comments/iibfo8/how_to_dynamically_change_comboboxlistbox_items/
 # add_loading_indicator
 # configure_item
+    with dpg.table(tag="globalSpotterTargetTable", header_row=True):
+        dpg.add_table_column(label="ST Master")
+        dpg.add_table_column(label="distST")
+        dpg.add_table_column(label="aziST")
+        dpg.add_table_column(label="Recalc. ST")
+        with dpg.table_row(tag=f"globalSpotterTargetRow"):
+            dpg.add_text(default_value="   ")
+            dpg.add_input_int(tag=f"spotterTargetDistChange",  # distSG ref
+                              default_value=0, step=0, step_fast=0, width=80)
+            dpg.add_input_int(tag=f"spotterTargetAziChange",  # aziSG ref
+                              default_value=0, step=0, step_fast=0, width=80)
+            dpg.add_button(tag=f"targetChangeButton",  # clicking prompts are you sure you want to recalculate sg?
+                           label="WARNING", width=80, callback=cT.recalculateSTValues)
+
+
+
     with dpg.table(tag="spotterChangeTable", header_row=True):
         dpg.add_table_column(label="Ref. Gun Name")
         dpg.add_table_column(label="distSG")

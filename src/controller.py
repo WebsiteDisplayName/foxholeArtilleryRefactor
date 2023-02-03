@@ -101,6 +101,19 @@ def delete_guns():
     dpg.configure_item("spotterPosDropdown", items=[
         firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
 
+def recalculateSTValues():
+    newGlobalDistST = dpg.get_value("spotterTargetDistChange")
+    newGlobalAziST = dpg.get_value("spotterTargetAziChange") % 360
+    for idx in range(1,gunCounter+1):
+        dpg.set_value(f"{idx}2", newGlobalDistST)
+        dpg.set_value(f"{idx}3", newGlobalAziST)
+        firingSolutionDict[idx].spotterToTargetDistance = newGlobalDistST
+        firingSolutionDict[idx].spotterToTargetAzimuth = newGlobalAziST
+        firingSolutionDict[idx].recalcGunToTarget()
+        dpg.set_value(
+            f"{idx}6", round(firingSolutionDict[idx].adjustedGunToTargetDistance,2))
+        dpg.set_value(
+            f"{idx}7", round(firingSolutionDict[idx].adjustedGunToTargetAzimuth,2))
 
 def recalculateSGValues():
     refGunName = dpg.get_value("spotterPosDropdown")
@@ -131,25 +144,29 @@ def recalculateSGValues():
                 refToCurrAzi, refToCurrDist, newRefAziSGBack, newRefDistSG)
             newCurrSGDist = cH.findDistanceGunToTarget(
                 refToCurrAzi, refToCurrDist, newRefAziSGBack, newRefDistSG)
-            firingSolutionDict[key].spotterToGunAzimuth = newCurrSGAzi
+            dpg.set_value(
+                f"{key}4", newCurrSGDist)
+            dpg.set_value(
+                f"{key}5", newCurrSGAzi)
             firingSolutionDict[key].spotterToGunDistance = newCurrSGDist
+            firingSolutionDict[key].spotterToGunAzimuth = newCurrSGAzi
+            firingSolutionDict[key].recalcGunToTarget()
+            dpg.set_value(
+                f"{key}6", round(firingSolutionDict[key].adjustedGunToTargetDistance,2))
+            dpg.set_value(
+                f"{key}7", round(firingSolutionDict[key].adjustedGunToTargetAzimuth,2))
     # update ref
-    firingSolutionDict[refKey].spotterToGunAzimuth = newRefAziSG
-    firingSolutionDict[refKey].spotterToGunDistance = newRefDistSG
-
-    # update view, does setting value trigger callback?
-    for key, fs in firingSolutionDict.items():
-        fs.recalcGunToTarget()
         dpg.set_value(
-            f"{key}4", float(f"{firingSolutionDict[key].spotterToGunDistance:.2f}"))
+            f"{refKey}4", newRefDistSG)
         dpg.set_value(
-            f"{key}5", float(f"{firingSolutionDict[key].spotterToGunAzimuth:.2f}"))
+            f"{refKey}5", newRefAziSG)
+        firingSolutionDict[refKey].spotterToGunDistance = newRefDistSG
+        firingSolutionDict[refKey].spotterToGunAzimuth = newRefAziSG
+        firingSolutionDict[refKey].recalcGunToTarget()
         dpg.set_value(
-            f"{key}6", float(f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}"))
+            f"{refKey}6", round(firingSolutionDict[refKey].adjustedGunToTargetDistance,2))
         dpg.set_value(
-            f"{key}7", float(f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}"))
-
-
+            f"{refKey}7", round(firingSolutionDict[refKey].adjustedGunToTargetAzimuth,2))
 
 # type is "target" or "gun"
     # shift is target, ctrl is gun (every screencap gets dist & azi)
