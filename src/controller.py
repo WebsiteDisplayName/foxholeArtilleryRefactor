@@ -199,7 +199,24 @@ def updateFSByScreenCap(key, type):
 def fileOptions(sender, app_data):
     if app_data == "Open FS":
         filePath =  filedialog.askopenfilename(initialdir = "../firingSolutionTables",title = "Select file",filetypes = (("txt files", "*.txt"),("all files","*.*")))
-        
+        for idx in range(gunCounter):
+            delete_guns()
+        with open(filePath) as f:
+            lines = f.readlines()
+            for line in lines:
+                add_guns()
+                line = line.strip() # parse string
+                valList = line.split(',')
+                valList = [valList[0]] + list(map(float, valList[1:]))
+                            # dpg.set_value(
+                # f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
+                dpg.set_value(f"{gunCounter}1",valList[0])
+                dpg.set_value(f"{gunCounter}2",valList[1])
+                dpg.set_value(f"{gunCounter}3",valList[2])
+                dpg.set_value(f"{gunCounter}4",valList[3])
+                dpg.set_value(f"{gunCounter}5",valList[4])
+                dpg.set_value(f"{gunCounter}6",valList[5])
+                dpg.set_value(f"{gunCounter}7",valList[6])
 
     # https://stackoverflow.com/questions/11295917/how-to-select-a-directory-and-store-the-location-using-tkinter-in-python
     elif app_data == "Save FS": #open folder, save text as what gui?
