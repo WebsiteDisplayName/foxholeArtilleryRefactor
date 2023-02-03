@@ -3,6 +3,8 @@ import artilleryCalculator as aC
 import calcHelper as cH
 import keyboard
 import ocr
+from tkinter import filedialog
+from tkinter import *
 
 # https://dearpygui.readthedocs.io/en/latest/documentation/item-creation.html
 # https://dearpygui.readthedocs.io/en/latest/tutorials/item-usage.html?highlight=current%20widget set values
@@ -196,8 +198,21 @@ def updateFSByScreenCap(key, type):
 
 def fileOptions(sender, app_data):
     if app_data == "Open FS":
-        pass
-    elif app_data == "Save FS"
+        filePath =  filedialog.askopenfilename(initialdir = "../firingSolutionTables",title = "Select file",filetypes = (("txt files", "*.txt"),("all files","*.*")))
+        
+
+    # https://stackoverflow.com/questions/11295917/how-to-select-a-directory-and-store-the-location-using-tkinter-in-python
+    elif app_data == "Save FS": #open folder, save text as what gui?
+        filePath =  filedialog.asksaveasfilename(initialdir = "../firingSolutionTables",
+            title="File name to save as",filetypes = (("txt files", "*.txt"),("all files", "*.*")))
+        with open(filePath+'.txt', 'w') as f:
+            for row in range(1,gunCounter+1):
+                for column in range(1,8): #7 columns
+                    f.write(str(dpg.get_value(f"{row}{column}")))
+                    if column == 7:
+                        f.write('\n')
+                        continue
+                    f.write(',')
 
 # open and store firingSolutions in .txt and add keybinds to setHotkeys
 

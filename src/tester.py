@@ -1,9 +1,8 @@
+from tkinter import filedialog
+from tkinter import *
 
-import keyboard
-import controller as cT
 
 
 if __name__ == "__main__":
-    keyboard.add_hotkey(
-        "shift+1", cT.updateFSByScreenCap(), args=[1, "target"])
-    keyboard.add_hotkey("ctrl+1", cT.updateFSByScreenCap(), args=[1, "gun"])
+    filePath =  filedialog.asksaveasfilename(initialdir = "../firingSolutionTables",title="Select file",filetypes = (("txt files", "*.txt"),("all files", "*.*")))
+    print (filePath)
