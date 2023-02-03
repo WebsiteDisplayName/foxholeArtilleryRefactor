@@ -185,6 +185,8 @@ def setHotkeys():
         keyboard.add_hotkey(f"shift+5", lambda: updateFSByScreenCap(5,"target"))
         keyboard.add_hotkey(f"ctrl+5", lambda: updateFSByScreenCap(5,"gun"))
 
+        keyboard.add_hotkey(f"ctrl+t", lambda: updateFSByScreenCap(1,"global"))
+        keyboard.add_hotkey(f"ctrl+g", lambda: updateFSByScreenCap(2,"global"))
 
 def updateFSByScreenCap(key, type):
     if key in firingSolutionDict:
@@ -204,14 +206,23 @@ def updateFSByScreenCap(key, type):
                 f"{key}4", float(f"{firingSolutionDict[key].spotterToGunDistance:.2f}"))
             dpg.set_value(
                 f"{key}5", float(f"{firingSolutionDict[key].spotterToGunAzimuth:.2f}"))
+        elif type == "global":
+            capDist, capAzi = ocr.screepCapExtract("global")
+            if key == 1: #spotter to target global change
+                dpg.set_value("spotterTargetDistChange",capDist)
+                dpg.set_value("spotterTargetAziChange",capAzi)
+                recalculateSTValues()
+            elif key == 2:
+                dpg.set_value("spotterGunDistChange",capDist)
+                dpg.set_value("spotterGunAziChange",capAzi)
+                recalculateSGValues()
 
         firingSolutionDict[key].recalcGunToTarget()
         dpg.set_value(
             f"{key}6", float(f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}"))
         dpg.set_value(
             f"{key}7", float(f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}"))
-    else:
-        return
+
 
 def fileOptions(sender, app_data):
     if app_data == "Open FS":
