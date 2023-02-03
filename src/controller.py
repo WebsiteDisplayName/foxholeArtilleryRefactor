@@ -132,6 +132,8 @@ def recalculateSGValues():
         for key, val in firingSolutionDict.items():  # find key of chosen refGunName
             if val.gunName == refGunName:
                 refKey = key
+        if refKey == -1:
+            return
         # calculating everything relative to the chosen refGunName, azimuth is traveling from ref to curr
         oldRefSGDist = firingSolutionDict[refKey].spotterToGunDistance
         oldRefSGAzi = firingSolutionDict[refKey].spotterToGunAzimuth
@@ -198,12 +200,13 @@ def updateFSByScreenCap(key, type):
             firingSolutionDict[key].spotterToGunAzimuth = capAzi
             setValues(key, "gun")
         elif type == "global":
-            capDist, capAzi = ocr.screepCapExtract("global")
             if key == 1: #spotter to target global change
+                capDist, capAzi = ocr.screepCapExtract("global1")
                 dpg.set_value("spotterTargetDistChange",capDist)
                 dpg.set_value("spotterTargetAziChange",capAzi)
                 recalculateSTValues()
             elif key == 2:
+                capDist, capAzi = ocr.screepCapExtract("global2")
                 dpg.set_value("spotterGunDistChange",capDist)
                 dpg.set_value("spotterGunAziChange",capAzi)
                 recalculateSGValues()
