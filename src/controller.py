@@ -37,35 +37,42 @@ def updateFiringSolution(sender, app_data, user_data):
         weaponNum = weaponList.index(app_data) + 1
         for key, fs in firingSolutionDict.items():
             fs.weaponType = int(weaponNum)
-            fs.recalcGunToTarget()
-            dpg.set_value(
-                f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
-            dpg.set_value(
-                f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
+            setValues(key, "adjusted")
         return
     elif varToChange == 7:  # wind force
         for key, fs in firingSolutionDict.items():
             fs.windForce = int(app_data)
-            fs.recalcGunToTarget()
-            dpg.set_value(
-                f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
-            dpg.set_value(
-                f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
+            setValues(key, "adjusted")
         return
     elif varToChange == 8:  # wind azimuth
         for key, fs in firingSolutionDict.items():
             fs.windAzimuth = int(app_data) % 360
-            fs.recalcGunToTarget()
-            dpg.set_value(
-                f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
-            dpg.set_value(
-                f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
+            setValues(key, "adjusted")
         return
-    firingSolutionDict[user_data[0]].recalcGunToTarget()
-    dpg.set_value(
-        f"{user_data[0]}6", f"{firingSolutionDict[user_data[0]].adjustedGunToTargetDistance:.2f}")
-    dpg.set_value(
-        f"{user_data[0]}7", f"{firingSolutionDict[user_data[0]].adjustedGunToTargetAzimuth:.2f}")
+    setValues(user_data[0], "adjusted")
+
+
+def setValues(key,type): #key is key from dictionary, type = [adjusted, target, gun]
+    if type == "target":
+        dpg.set_value(
+            f"{key}2", f"{firingSolutionDict[key].spotterToTargetDistance:.2f}")
+        dpg.set_value(
+            f"{key}3", f"{firingSolutionDict[key].spotterToTargetAzimuth:.2f}")
+    elif type == "gun":
+        dpg.set_value(
+            f"{key}4", f"{firingSolutionDict[key].spotterToGunDistance:.2f}")
+        dpg.set_value(
+            f"{key}5", f"{firingSolutionDict[key].spotterToGunAzimuth:.2f}")
+    elif type == "adjusted":
+        firingSolutionDict[key].recalcGunToTarget()
+        dpg.set_value(
+            f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
+        dpg.set_value(
+            f"{key}7", f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}")
+        dpg.set_value(
+            f"{key}8", f"{firingSolutionDict[key].oldAdjustedGunToTargetDistance:.2f}")
+        dpg.set_value(
+            f"{key}9", f"{firingSolutionDict[key].oldAdjustedGunToTargetAzimuth:.2f}")
 
 
 def add_guns():
@@ -86,6 +93,8 @@ def add_guns():
                           default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 5], width=80)  # aziSG
         dpg.add_text(tag=f"{gunCounter}6", default_value=0)  # adjDistGT
         dpg.add_text(tag=f"{gunCounter}7", default_value=0)  # adjAziGT
+        dpg.add_text(tag=f"{gunCounter}8", default_value=0) # delta between old and new adjDistGT
+        dpg.add_text(tag=f"{gunCounter}9", default_value=0) # delta between old and new adjDistGT
     # I changed this
     firingSolutionDict[gunCounter].gunName = f"Gun {gunCounter}"
     dpg.configure_item("spotterPosDropdown", items=[
@@ -109,12 +118,8 @@ def recalculateSTValues():
         dpg.set_value(f"{idx}3", newGlobalAziST)
         firingSolutionDict[idx].spotterToTargetDistance = newGlobalDistST
         firingSolutionDict[idx].spotterToTargetAzimuth = newGlobalAziST
-        firingSolutionDict[idx].recalcGunToTarget()
-        dpg.set_value(
-            f"{idx}6", round(firingSolutionDict[idx].adjustedGunToTargetDistance,2))
-        dpg.set_value(
-            f"{idx}7", round(firingSolutionDict[idx].adjustedGunToTargetAzimuth,2))
-
+        setValues(idx, "adjusted")
+        
 def recalculateSGValues():
     refGunName = dpg.get_value("spotterPosDropdown")
     newRefDistSG = dpg.get_value("spotterGunDistChange")
@@ -150,11 +155,7 @@ def recalculateSGValues():
                 f"{key}5", newCurrSGAzi)
             firingSolutionDict[key].spotterToGunDistance = newCurrSGDist
             firingSolutionDict[key].spotterToGunAzimuth = newCurrSGAzi
-            firingSolutionDict[key].recalcGunToTarget()
-            dpg.set_value(
-                f"{key}6", round(firingSolutionDict[key].adjustedGunToTargetDistance,2))
-            dpg.set_value(
-                f"{key}7", round(firingSolutionDict[key].adjustedGunToTargetAzimuth,2))
+            setValues(key, "adjusted")
     # update ref
         dpg.set_value(
             f"{refKey}4", newRefDistSG)
@@ -162,11 +163,7 @@ def recalculateSGValues():
             f"{refKey}5", newRefAziSG)
         firingSolutionDict[refKey].spotterToGunDistance = newRefDistSG
         firingSolutionDict[refKey].spotterToGunAzimuth = newRefAziSG
-        firingSolutionDict[refKey].recalcGunToTarget()
-        dpg.set_value(
-            f"{refKey}6", round(firingSolutionDict[refKey].adjustedGunToTargetDistance,2))
-        dpg.set_value(
-            f"{refKey}7", round(firingSolutionDict[refKey].adjustedGunToTargetAzimuth,2))
+        setValues(refKey, "adjusted")
 
 # type is "target" or "gun"
     # shift is target, ctrl is gun (every screencap gets dist & azi)
@@ -194,18 +191,12 @@ def updateFSByScreenCap(key, type):
             capDist, capAzi = ocr.screepCapExtract("target")
             firingSolutionDict[key].spotterToTargetDistance = capDist
             firingSolutionDict[key].spotterToTargetAzimuth = capAzi
-            dpg.set_value(
-                f"{key}2", float(f"{firingSolutionDict[key].spotterToTargetDistance:.2f}"))
-            dpg.set_value(
-                f"{key}3", float(f"{firingSolutionDict[key].spotterToTargetAzimuth:.2f}"))
+            setValues(key, "target")
         elif type == "gun":
             capDist, capAzi = ocr.screepCapExtract("gun")
             firingSolutionDict[key].spotterToGunDistance = capDist
             firingSolutionDict[key].spotterToGunAzimuth = capAzi
-            dpg.set_value(
-                f"{key}4", float(f"{firingSolutionDict[key].spotterToGunDistance:.2f}"))
-            dpg.set_value(
-                f"{key}5", float(f"{firingSolutionDict[key].spotterToGunAzimuth:.2f}"))
+            setValues(key, "gun")
         elif type == "global":
             capDist, capAzi = ocr.screepCapExtract("global")
             if key == 1: #spotter to target global change
@@ -217,11 +208,7 @@ def updateFSByScreenCap(key, type):
                 dpg.set_value("spotterGunAziChange",capAzi)
                 recalculateSGValues()
 
-        firingSolutionDict[key].recalcGunToTarget()
-        dpg.set_value(
-            f"{key}6", float(f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}"))
-        dpg.set_value(
-            f"{key}7", float(f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}"))
+        setValues(key, "adjusted")
 
 
 def fileOptions(sender, app_data):

@@ -17,6 +17,8 @@ class firingSolution:
     adjustedGunToTargetAzimuth = 0
     adjustedGunToTargetDistance = 0
 
+    oldAdjustedGunToTargetAzimuth = 0
+    oldAdjustedGunToTargetDistance = 0
     windAzimuth = 0
     windForce = 1
     weaponType = 1  # 120mm & 150mm
@@ -26,6 +28,8 @@ class firingSolution:
                                                   self.spotterToGunAzimuth, self.spotterToGunDistance, self.windAzimuth, self.windForce, self.weaponType)
         self.unadjustedGunToTargetAzimuth = gttArr[0]
         self.unadjustedGunToTargetDistance = gttArr[1]
+        self.oldAdjustedGunToTargetAzimuth = gttArr[2] - self.adjustedGunToTargetAzimuth
+        self.oldAdjustedGunToTargetDistance = gttArr[3] - self.adjustedGunToTargetDistance
         self.adjustedGunToTargetAzimuth = gttArr[2]
         self.adjustedGunToTargetDistance = gttArr[3]
 
