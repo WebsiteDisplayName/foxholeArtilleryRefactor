@@ -34,8 +34,8 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="aziSG")
         dpg.add_table_column(label="adjDistGT")
         dpg.add_table_column(label="adjAziGT")
-        dpg.add_table_column(label="adjDGT change")
-        dpg.add_table_column(label="adjAGT change")
+        dpg.add_table_column(label="CHG adjDGT")
+        dpg.add_table_column(label="CHG adjAGT")
 
 # https://www.reddit.com/r/DearPyGui/comments/iibfo8/how_to_dynamically_change_comboboxlistbox_items/
 # add_loading_indicator
