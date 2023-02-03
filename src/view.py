@@ -23,6 +23,8 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_text(default_value="Wind Azi")
         dpg.add_input_int(tag="windAziDropdown",
                           default_value=0, step=0, step_fast=0, callback=cT.updateFiringSolution, user_data=["global", 8], width=30)
+        dpg.add_combo(tag="fileOptionsDropdown", items=["Open FS", "Save FS"], default_value="Open FS",
+                      callback=cT.fileOptions, width=30)
 
     with dpg.table(tag="gun_table", header_row=True):
         dpg.add_table_column(label="Name")

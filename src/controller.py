@@ -148,6 +148,7 @@ def recalculateSGValues():
             f"{key}7", float(f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}"))
 
 
+
 # type is "target" or "gun"
     # shift is target, ctrl is gun (every screencap gets dist & azi)
 # def fish():
@@ -192,6 +193,14 @@ def updateFSByScreenCap(key, type):
             f"{key}7", float(f"{firingSolutionDict[key].adjustedGunToTargetAzimuth:.2f}"))
     else:
         return
+
+def fileOptions(sender, app_data):
+    if app_data == "Open FS":
+        pass
+    elif app_data == "Save FS"
+
+# open and store firingSolutions in .txt and add keybinds to setHotkeys
+
 
 
 if __name__ == "__main__":
