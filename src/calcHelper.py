@@ -1,5 +1,4 @@
 # use classes because some data needs to persist until changed
-import pandas as pd
 import math
 
 
