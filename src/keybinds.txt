@@ -1,0 +1,12 @@
+shift+1,1,target
+shift+2,2,target
+shift+3,3,target
+shift+4,4,target
+shift+5,5,target
+ctrl+1,1,gun
+ctrl+2,2,gun
+ctrl+3,3,gun
+ctrl+4,4,gun
+ctrl+5,5,gun
+ctrl+t,1,global
+ctrl+g,2,global
