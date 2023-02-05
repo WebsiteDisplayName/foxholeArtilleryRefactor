@@ -1,6 +1,7 @@
 # foxholeArtilleryRefactor
 Developed using DearPyGui\
-&emsp;https://github.com/hoffstadt/DearPyGui \ 
+&emsp;https://github.com/hoffstadt/DearPyGui 
+
 Download CUDA/GPU drivers to use EasyOCR in GPU mode\
 
 To use:\
