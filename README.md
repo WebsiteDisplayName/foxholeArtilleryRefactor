@@ -2,7 +2,7 @@
 Developed using DearPyGui\
 &emsp;https://github.com/hoffstadt/DearPyGui 
 
-Download CUDA/GPU drivers to use EasyOCR in GPU mode\
+Download CUDA/GPU drivers to use EasyOCR in GPU mode
 
 To use:\
 &emsp;cd foxholeArtilleryRefactor root folder\
