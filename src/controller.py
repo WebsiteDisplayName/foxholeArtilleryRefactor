@@ -167,34 +167,26 @@ def recalculateSGValues():
         firingSolutionDict[refKey].spotterToGunAzimuth = newRefAziSG
         setValues(refKey, "adjusted")
 
-# type is "target" or "gun"
-    # shift is target, ctrl is gun (every screencap gets dist & azi)
-# def fish():
-#     keyboard.add_hotkey(f"shift+{1}", lambda: print(1, "target"))
-#     keyboard.add_hotkey(f"ctrl+{1}", lambda: print(1, "gun"))
+
 def setHotkeys():
-        keyboard.add_hotkey(f"shift+1", lambda: updateFSByScreenCap(1,"target")) #spotterToTarget: dist and azi
-        keyboard.add_hotkey(f"shift+2", lambda: updateFSByScreenCap(2,"target"))
-        keyboard.add_hotkey(f"shift+3", lambda: updateFSByScreenCap(3,"target"))
-        keyboard.add_hotkey(f"shift+4", lambda: updateFSByScreenCap(4,"target"))
-        keyboard.add_hotkey(f"shift+5", lambda: updateFSByScreenCap(5,"target"))
+        # keyboard.add_hotkey(f"shift+1", lambda: updateFSByScreenCap(1,"target")) #spotterToTarget: dist and azi
+        # keyboard.add_hotkey(f"shift+2", lambda: updateFSByScreenCap(2,"target"))
 
-        keyboard.add_hotkey(f"ctrl+1", lambda: updateFSByScreenCap(1,"gun")) #spotterToGun: dist and azi
-        keyboard.add_hotkey(f"ctrl+2", lambda: updateFSByScreenCap(2,"gun"))
-        keyboard.add_hotkey(f"ctrl+3", lambda: updateFSByScreenCap(3,"gun"))
-        keyboard.add_hotkey(f"ctrl+4", lambda: updateFSByScreenCap(4,"gun"))
-        keyboard.add_hotkey(f"ctrl+5", lambda: updateFSByScreenCap(5,"gun"))
+        # keyboard.add_hotkey(f"ctrl+1", lambda: updateFSByScreenCap(1,"gun")) #spotterToGun: dist and azi
+        # keyboard.add_hotkey(f"ctrl+2", lambda: updateFSByScreenCap(2,"gun"))
 
-        keyboard.add_hotkey(f"ctrl+t", lambda: updateFSByScreenCap(1,"global")) #global 1: global target change, global 2: ref global SG change
-        keyboard.add_hotkey(f"ctrl+g", lambda: updateFSByScreenCap(2,"global"))
-        # with open("keybinds.txt") as f:
-        #     lines = f.readlines()
-        #     for line in lines:
-        #         line = line.strip() # parse string
-        #         valList = line.split(',')
-        #         valList[1] = int(valList[1])
-        #         print(valList)
-        #         keyboard.add_hotkey(valList[0], lambda: updateFSByScreenCap(valList[1],valList[2]))
+        # keyboard.add_hotkey(f"ctrl+t", lambda: updateFSByScreenCap(1,"global")) #global 1: global target change, global 2: ref global SG change
+        # keyboard.add_hotkey(f"ctrl+g", lambda: updateFSByScreenCap(2,"global"))
+        with open("keybinds.txt") as f:
+            lines = f.readlines()
+            for line in lines:
+                line = line.strip() # parse string
+                valList = line.split(',')
+                valList[1] = int(valList[1])
+                print(valList)
+                keyboard.add_hotkey(valList[0], lambda vals=valList[1:]: updateFSByScreenCap(vals[0],vals[1]))
+                # 0 = keybind, 1 = which rows are affected, 2 = columns/type
+                # black magic: https://stackoverflow.com/questions/21791482/split-list-into-different-variables
 
 def updateFSByScreenCap(key, type):
     if key in firingSolutionDict:
