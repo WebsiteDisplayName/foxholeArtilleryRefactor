@@ -13,3 +13,5 @@ To use: <br/>
 Should use with OnTopReplica for in-game overlay <br/>
 &emsp;https://github.com/LorenzCK/OnTopReplica/releases <br/>
 &emsp;alt + tab: to enter inputs
+
+![Screenshot](images/appAppearance.png)
