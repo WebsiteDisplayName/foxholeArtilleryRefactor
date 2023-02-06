@@ -7,15 +7,15 @@ class firingSolution:
     # set wind & weapon type values to global?, when they change, change all firingSolution object instance variables too?
     # class variables are default variables, change through function
 
-    spotterToTargetAzimuth = 0
     spotterToTargetDistance = 0
-    spotterToGunAzimuth = 0
+    spotterToTargetAzimuth = 0
     spotterToGunDistance = 0
+    spotterToGunAzimuth = 0
+    adjustedGunToTargetDistance = 0
+    adjustedGunToTargetAzimuth = 0
 
     unadjustedGunToTargetAzimuth = 0
     unadjustedGunToTargetDistance = 0
-    adjustedGunToTargetAzimuth = 0
-    adjustedGunToTargetDistance = 0
 
     oldAdjustedGunToTargetAzimuth = 0
     oldAdjustedGunToTargetDistance = 0

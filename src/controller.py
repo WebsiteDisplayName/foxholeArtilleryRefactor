@@ -227,15 +227,17 @@ def fileOptions(sender, app_data):
                 line = line.strip() # parse string
                 valList = line.split(',')
                 valList = [valList[0]] + list(map(float, valList[1:]))
-                            # dpg.set_value(
-                # f"{key}6", f"{firingSolutionDict[key].adjustedGunToTargetDistance:.2f}")
-                dpg.set_value(f"{gunCounter}1",valList[0])
-                dpg.set_value(f"{gunCounter}2",valList[1])
-                dpg.set_value(f"{gunCounter}3",valList[2])
-                dpg.set_value(f"{gunCounter}4",valList[3])
-                dpg.set_value(f"{gunCounter}5",valList[4])
-                dpg.set_value(f"{gunCounter}6",valList[5])
-                dpg.set_value(f"{gunCounter}7",valList[6])
+
+                firingSolutionDict[gunCounter].gunName = valList[0] 
+                firingSolutionDict[gunCounter].spotterToTargetDistance = valList[1] 
+                firingSolutionDict[gunCounter].spotterToTargetAzimuth = valList[2]
+                firingSolutionDict[gunCounter].spotterToGunDistance = valList[3]
+                firingSolutionDict[gunCounter].spotterToGunAzimuth = valList[4]
+                firingSolutionDict[gunCounter].adjustedGunToTargetDistance = valList[5]
+                firingSolutionDict[gunCounter].adjustedGunToTargetAzimuth = valList[6]
+                setValues(gunCounter, "target")
+                setValues(gunCounter, "gun")
+                setValues(gunCounter, "adjusted")
 
     # https://stackoverflow.com/questions/11295917/how-to-select-a-directory-and-store-the-location-using-tkinter-in-python
     elif app_data == "Save FS": #open folder, save text as what gui?
