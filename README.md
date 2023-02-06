@@ -17,6 +17,8 @@ Should use with OnTopReplica for in-game overlay <br/>
 Global hotkey keybinds can be altered by changing the keybinds.txt file <br/>
 &emsp;column 1: indicates keybind <br/>
 &emsp;column 2: indicates which firing solution row is referred to <br/>
-&emsp;column 3: target = distST & aziST | gun = distSG & aziSG | 1,global = changes ST values for all rows | 2,global = changes spotter to gun values for all rows by first inputting reference values for one spotter to gun  
+&emsp;column 3: target = distST & aziST | gun = distSG & aziSG <br/>
+&emsp;&emsp;1,global = changes ST values for all rows <br/>
+&emsp;&emsp;2,global = changes spotter to gun values for all rows by first inputting reference values for one spotter to gun  
 
 ![Screenshot](images/appAppearance.png)
