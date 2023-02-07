@@ -71,6 +71,25 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
             dpg.add_button(tag=f"spotterChangeButton",  # clicking prompts are you sure you want to recalculate sg?
                            label="WARNING", width=80, callback=cT.recalculateSGValues)
 
+    with dpg.table(tag="windChangeTable", header_row=True):
+        dpg.add_table_column(label="Wind Master")
+        dpg.add_table_column(label="distSF")
+        dpg.add_table_column(label="aziSF")
+        dpg.add_table_column(label="distSP")
+        dpg.add_table_column(label="aziSP")
+        with dpg.table_row(tag=f"windRow"):
+            dpg.add_text(default_value="   ")
+            dpg.add_input_int(tag=f"distSpotterToFlag",  # distST ref spotter to end of flag
+                              default_value=0, step=0, step_fast=0, width=80)
+            dpg.add_input_int(tag=f"aziSpotterToFlag",  # aziST ref
+                              default_value=0, step=0, step_fast=0, width=80)
+            dpg.add_input_int(tag=f"distSpotterToPole",  # distSG ref spotter to pole
+                              default_value=0, step=0, step_fast=0, width=80)
+            dpg.add_input_int(tag=f"aziSpotterToPole",  # aziSG ref
+                              default_value=0, step=0, step_fast=0, width=80)
+            dpg.add_button(tag=f"windChangeButton",  # clicking prompts are you sure you want to recalculate sg?
+                           label="WARNING", width=80, callback=cT.globalWindCalc)
+
 # themes https://github.com/hoffstadt/DearPyGui_Ext
 # https://github.com/hoffstadt/DearPyGui/discussions/1636
 # https://github.com/hoffstadt/DearPyGui_Ext/blob/master/dearpygui_ext/themes.py

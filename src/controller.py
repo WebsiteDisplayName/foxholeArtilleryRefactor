@@ -167,6 +167,13 @@ def recalculateSGValues():
         firingSolutionDict[refKey].spotterToGunAzimuth = newRefAziSG
         setValues(refKey, "adjusted")
 
+def globalWindCalc():
+    distSF = dpg.get_value("distSpotterToFlag")
+    aziSF = dpg.get_value("aziSpotterToFlag") % 360
+    distSP = dpg.get_value("distSpotterToPole")
+    aziSF = dpg.get_value("aziSpotterToPole") % 360
+    windAzimuth = cH.findAzimuthGunToTarget(distSF,aziSF,distSP,aziSF)
+
 
 def setHotkeys():
         # keyboard.add_hotkey(f"shift+1", lambda: updateFSByScreenCap(1,"target")) #spotterToTarget: dist and azi
