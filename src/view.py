@@ -21,7 +21,7 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_combo(tag="windForceDropdown", items=[1, 2, 3], default_value=1,
                       callback=cT.updateFiringSolution, user_data=["global", 7], width=30)
         dpg.add_text(default_value="Wind Azi")
-        dpg.add_input_int(tag="windAziDropdown",
+        dpg.add_input_int(tag="globalWindAzimuth",
                           default_value=0, step=0, step_fast=0, callback=cT.updateFiringSolution, user_data=["global", 8], width=30)
         dpg.add_combo(tag="fileOptionsDropdown", items=["Open FS", "Save FS"], default_value="Open FS",
                       callback=cT.fileOptions, width=100)
@@ -42,11 +42,15 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
 # configure_item
     with dpg.table(tag="globalSpotterTargetTable", header_row=True):
         dpg.add_table_column(label="ST Master")
+        dpg.add_table_column(label="")
+        dpg.add_table_column(label="")
         dpg.add_table_column(label="distST")
         dpg.add_table_column(label="aziST")
         dpg.add_table_column(label="Recalc. ST")
         with dpg.table_row(tag=f"globalSpotterTargetRow"):
-            dpg.add_text(default_value="   ")
+            dpg.add_text(default_value="")
+            dpg.add_text(default_value="")
+            dpg.add_text(default_value="")
             dpg.add_input_int(tag=f"spotterTargetDistChange",  # distSG ref
                               default_value=0, step=0, step_fast=0, width=80)
             dpg.add_input_int(tag=f"spotterTargetAziChange",  # aziSG ref
@@ -57,11 +61,15 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
 
 
     with dpg.table(tag="spotterChangeTable", header_row=True):
+        dpg.add_table_column(label="SG Master")
+        dpg.add_table_column(label="")
         dpg.add_table_column(label="Ref. Gun Name")
         dpg.add_table_column(label="distSG")
         dpg.add_table_column(label="aziSG")
         dpg.add_table_column(label="Recalc. SG")
         with dpg.table_row(tag=f"spotterRow"):
+            dpg.add_text(default_value="")
+            dpg.add_text(default_value="")
             dpg.add_combo(tag="spotterPosDropdown",  # firing solution name ref
                           parent="spotterRow", items=[], width=80)
             dpg.add_input_int(tag=f"spotterGunDistChange",  # distSG ref
@@ -77,8 +85,9 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="aziSF")
         dpg.add_table_column(label="distSP")
         dpg.add_table_column(label="aziSP")
+        dpg.add_table_column(label="Recalc. Wind")
         with dpg.table_row(tag=f"windRow"):
-            dpg.add_text(default_value="   ")
+            dpg.add_text(default_value="")
             dpg.add_input_int(tag=f"distSpotterToFlag",  # distST ref spotter to end of flag
                               default_value=0, step=0, step_fast=0, width=80)
             dpg.add_input_int(tag=f"aziSpotterToFlag",  # aziST ref
@@ -98,7 +107,7 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
     # dpg.bind_theme(dark_theme)
 
 
-dpg.create_viewport(title='Artillery Calculator', width=600, height=400)
+dpg.create_viewport(title='Artillery Calculator', width=800, height=500)
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.set_primary_window("Primary Window", True)

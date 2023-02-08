@@ -18,3 +18,5 @@ ctrl+8,8,gun
 ctrl+9,9,gun
 ctrl+t,1,global
 ctrl+g,2,global
+ctrl+v,3,global
+shift+v,4,global

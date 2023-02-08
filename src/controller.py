@@ -171,9 +171,12 @@ def globalWindCalc():
     distSF = dpg.get_value("distSpotterToFlag")
     aziSF = dpg.get_value("aziSpotterToFlag") % 360
     distSP = dpg.get_value("distSpotterToPole")
-    aziSF = dpg.get_value("aziSpotterToPole") % 360
-    windAzimuth = cH.findAzimuthGunToTarget(distSF,aziSF,distSP,aziSF)
-
+    aziSP = dpg.get_value("aziSpotterToPole") % 360
+    newWindAzimuth = cH.findAzimuthGunToTarget(aziSF,distSF,aziSP,distSP)
+    dpg.set_value("globalWindAzimuth",newWindAzimuth)
+    for key in range(1,gunCounter+1):
+        firingSolutionDict[key].windAzimuth = newWindAzimuth
+        setValues(key, "adjusted")
 
 def setHotkeys():
         # keyboard.add_hotkey(f"shift+1", lambda: updateFSByScreenCap(1,"target")) #spotterToTarget: dist and azi
@@ -213,11 +216,21 @@ def updateFSByScreenCap(key, type):
                 dpg.set_value("spotterTargetDistChange",capDist)
                 dpg.set_value("spotterTargetAziChange",capAzi)
                 recalculateSTValues()
-            elif key == 2:
+            elif key == 2: #SG master
                 capDist, capAzi = ocr.screepCapExtract("global2")
                 dpg.set_value("spotterGunDistChange",capDist)
                 dpg.set_value("spotterGunAziChange",capAzi)
                 recalculateSGValues()
+            elif key == 3: #global wind flag ctrl + V
+                capDist, capAzi = ocr.screepCapExtract("global3")
+                dpg.set_value("distSpotterToFlag",capDist)
+                dpg.set_value("aziSpotterToFlag",capAzi)
+                globalWindCalc()
+            elif key == 4: #global wind pole shift + V
+                capDist, capAzi = ocr.screepCapExtract("global4")
+                dpg.set_value("distSpotterToPole",capDist)
+                dpg.set_value("aziSpotterToPole",capAzi)
+                globalWindCalc()
 
         setValues(key, "adjusted")
 
