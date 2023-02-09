@@ -193,7 +193,6 @@ def setHotkeys():
                 line = line.strip() # parse string
                 valList = line.split(',')
                 valList[1] = int(valList[1])
-                print(valList)
                 keyboard.add_hotkey(valList[0], lambda vals=valList[1:]: updateFSByScreenCap(vals[0],vals[1]))
                 # 0 = keybind, 1 = which rows are affected, 2 = columns/type
                 # black magic: https://stackoverflow.com/questions/21791482/split-list-into-different-variables
