@@ -26,6 +26,8 @@ def updateFiringSolution(sender, app_data, user_data):
             firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
         dpg.configure_item("spotterPosDropdown", items=[
             firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+        dpg.configure_item("impliedWindDropdown", items=[
+            firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
 
     elif varToChange == 2:  # distST
         firingSolutionDict[user_data[0]].spotterToTargetDistance = app_data
@@ -105,6 +107,8 @@ def add_guns():
         firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
     dpg.configure_item("spotterPosDropdown", items=[
         firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+    dpg.configure_item("impliedWindDropdown", items=[
+        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
 
 
 def delete_guns():
@@ -116,6 +120,8 @@ def delete_guns():
     dpg.configure_item("gridGunDropdown", items=[
         firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
     dpg.configure_item("spotterPosDropdown", items=[
+        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+    dpg.configure_item("impliedWindDropdown", items=[
         firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
 
 def gridCoordConv():
@@ -296,6 +302,34 @@ def globalWindCalc():
         firingSolutionDict[key].windAzimuth = newWindAzimuth
         setValues(key, "adjusted")
 
+def impliedWindCalc():
+    refImpliedGunName = dpg.get_value("impliedWindDropdown")
+    distSI = dpg.get_value("distSpotterToImpact")
+    aziSI = dpg.get_value("aziSpotterToImpact") % 360
+    for key, val in firingSolutionDict.items():
+        if val.gunName == refImpliedGunName:
+            refKey = key
+            break
+    # findDistanceGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance)
+    origDistSG = firingSolutionDict[refKey].spotterToGunDistance
+    origAziSG = firingSolutionDict[refKey].spotterToGunAzimuth
+    origDistGT = firingSolutionDict[refKey].unadjustedGunToTargetDistance
+    origAziGT = firingSolutionDict[refKey].unadjustedGunToTargetAzimuth
+
+    distGI = cH.findDistanceGunToTarget(aziSI, distSI, origAziSG, origDistSG)
+    aziGI = cH.findAzimuthGunToTarget(aziSI, distSI, origAziSG, origDistSG)
+
+    # implied wind force, implied wind azimuth
+    impWF = cH.findDistanceGunToTarget(aziGI, distGI, origDistGT, origAziGT)
+    impWA = cH.findAzimuthGunToTarget(aziGI, distGI, origDistGT, origAziGT)
+
+    dpg.set_value("impliedWindForce",impWF)
+    dpg.set_value("impliedWindAzimuth",impWA)
+    # have impval in row call callback, global push pushes whatever is in the cell to global & recalc
+
+def pushImpliedWindToGlobal():
+    
+
 def setHotkeys():
         with open("keybinds.txt") as f:
             lines = f.readlines()
@@ -347,6 +381,8 @@ def updateFSByScreenCap(key, type):
 def fileOptions(sender, app_data):
     if app_data == "Open FS":
         filePath =  filedialog.askopenfilename(initialdir = "../firingSolutionTables",title = "Select file",filetypes = (("txt files", "*.txt"),("all files","*.*")))
+        if filePath == "":
+            return
         for idx in range(gunCounter):
             delete_guns()
         with open(filePath) as f:
