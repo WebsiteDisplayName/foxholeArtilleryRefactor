@@ -1,8 +1,8 @@
-from tkinter import filedialog
-from tkinter import *
+import controller as cT
 
 
 
 if __name__ == "__main__":
-    filePath =  filedialog.asksaveasfilename(initialdir = "../firingSolutionTables",title="Select file",filetypes = (("txt files", "*.txt"),("all files", "*.*")))
-    print (filePath)
+
+    val = cT.originDistFromGridCoord("a1k77")
+    print(val)

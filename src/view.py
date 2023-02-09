@@ -40,6 +40,30 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
 # https://www.reddit.com/r/DearPyGui/comments/iibfo8/how_to_dynamically_change_comboboxlistbox_items/
 # add_loading_indicator
 # configure_item
+
+    # Grid Coord. Conv.
+    with dpg.table(tag="gridCoordTable", header_row=True):
+        dpg.add_table_column(label="Grid Conv.")
+        dpg.add_table_column(label="")
+        dpg.add_table_column(label="Ref. Gun Name")
+        dpg.add_table_column(label="Gun")
+        dpg.add_table_column(label="Target")
+        dpg.add_table_column(label="Recalc. Grid ST")
+        with dpg.table_row(tag=f"gridCoordRow"):
+            dpg.add_text(default_value="")
+            dpg.add_text(default_value="")
+            dpg.add_combo(tag="gridGunDropdown",  # firing solution name ref
+                          parent="gridCoordRow", items=[], width=80)
+            dpg.add_input_text(tag=f"gridCoord1",  # distSG ref
+                              default_value="", width=80)
+            dpg.add_input_text(tag=f"gridCoord2",  # aziSG ref
+                              default_value="", width=80)
+            dpg.add_button(tag=f"gridCoordButton",  # clicking prompts are you sure you want to recalculate sg?
+                           label="WARNING", width=80, callback=cT.gridCoordConv())    
+
+
+
+
     with dpg.table(tag="globalSpotterTargetTable", header_row=True):
         dpg.add_table_column(label="ST Master")
         dpg.add_table_column(label="")

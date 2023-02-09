@@ -5,6 +5,7 @@ import keyboard
 import ocr
 from tkinter import filedialog
 from tkinter import *
+import math
 
 # https://dearpygui.readthedocs.io/en/latest/documentation/item-creation.html
 # https://dearpygui.readthedocs.io/en/latest/tutorials/item-usage.html?highlight=current%20widget set values
@@ -21,8 +22,11 @@ def updateFiringSolution(sender, app_data, user_data):
     varToChange = user_data[1]
     if varToChange == 1:  # gun name I changed this
         firingSolutionDict[user_data[0]].gunName = app_data
+        dpg.configure_item("gridGunDropdown", items=[
+            firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
         dpg.configure_item("spotterPosDropdown", items=[
             firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+
     elif varToChange == 2:  # distST
         firingSolutionDict[user_data[0]].spotterToTargetDistance = app_data
     elif varToChange == 3:  # aziST
@@ -84,19 +88,21 @@ def add_guns():
         dpg.add_input_text(tag=f"{gunCounter}1",
                            default_value=f"Gun {gunCounter}", callback=updateFiringSolution, user_data=[gunCounter, 1], width=80)  # Name
         dpg.add_input_int(tag=f"{gunCounter}2",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 2], width=80)  # distST
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 2], width=80, on_enter=True)  # distST
         dpg.add_input_int(tag=f"{gunCounter}3",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 3], width=80)  # aziST
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 3], width=80, on_enter=True)  # aziST
         dpg.add_input_int(tag=f"{gunCounter}4",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 4], width=80)  # distSG
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 4], width=80, on_enter=True)  # distSG
         dpg.add_input_int(tag=f"{gunCounter}5",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 5], width=80)  # aziSG
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 5], width=80, on_enter=True)  # aziSG
         dpg.add_text(tag=f"{gunCounter}6", default_value=0)  # adjDistGT
         dpg.add_text(tag=f"{gunCounter}7", default_value=0)  # adjAziGT
         dpg.add_text(tag=f"{gunCounter}8", default_value=0) # delta between old and new adjDistGT
         dpg.add_text(tag=f"{gunCounter}9", default_value=0) # delta between old and new adjDistGT
     # I changed this
     firingSolutionDict[gunCounter].gunName = f"Gun {gunCounter}"
+    dpg.configure_item("gridGunDropdown", items=[
+        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
     dpg.configure_item("spotterPosDropdown", items=[
         firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
 
@@ -107,8 +113,99 @@ def delete_guns():
         dpg.delete_item(f"new_gun{gunCounter}")
         del firingSolutionDict[gunCounter]
         gunCounter -= 1
+    dpg.configure_item("gridGunDropdown", items=[
+        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
     dpg.configure_item("spotterPosDropdown", items=[
         firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+
+def gridCoordConv():
+    # a1 top left, q15 bottom right
+    # g9 125 meter side
+    # g9k3: 41 meter side
+    # g9k3k3: ~13.8 meter side
+    # first calculate horizontal and vertical of both points in distance, then subtract
+    # find length of two sides at 90, calc azimuth and distance of hypotenuse
+    # tactic: a1 = top left of grid square, keypads add distance?
+    refGridGunName =dpg.get_value("gridGunDropdown")
+    gunGridCoord = dpg.get_value("gridCoord1")
+    targetGridCoord = dpg.get_value("gridCoord2")
+
+    hvValsGun = originDistFromGridCoord(gunGridCoord)
+    hvValsTarget = originDistFromGridCoord(targetGridCoord)
+    horizDiff = abs(hvValsGun[0] - hvValsTarget[0])
+    vertDiff = abs(hvValsGun[1] - hvValsTarget[1])
+    hypotenuse = 
+
+def originDistFromGridCoord(gridCoord):
+    # start in bottom left
+    # g9k3: 41 meter side
+    gridCoord = list(gridCoord)
+
+    horizLetters = list('abcdefghijklmnopq')
+    vertNumbers = list(range(1,16))
+
+    horizLettersDict = dict(zip(horizLetters,list(range(0,len(horizLetters))))) # 'a':0, 'b':1
+    vertNumbersDict = dict(zip(vertNumbers[::-1], list(range(0,len(vertNumbers))))) # 15:0, 14:1, 1:14
+
+    # https://www.reddit.com/r/foxholegame/comments/mopq7l/foxholes_map_is_64km2/
+    regionHorizLength = 2184
+    regionVertLength = 1890 #hard coded !
+    gridHorizLength = regionHorizLength / len(horizLetters)
+    gridVertLength = regionVertLength / len(vertNumbers)
+
+    # distance from botton left of grid map (A15)
+    runningHorizontalDistance = 0
+    runningVerticalDistance = 0
+
+    horizLetter = gridCoord[0].lower()
+    vertNumber = int(gridCoord[1])
+    keypad = int(gridCoord[3]) 
+
+    #789
+    #456
+    #123
+
+    # handles grid square (G9)
+    runningHorizontalDistance += horizLettersDict[horizLetter]*gridHorizLength  
+    runningVerticalDistance += vertNumbersDict[vertNumber]*gridVertLength
+
+    # handles keypad, convert to hor/vert distance
+    # one part handles vertical and another conditional handles horiztonal
+    if len(gridCoord) >= 4:
+        runningHorizontalDistance += gridHorizLength/6 # moves to middle of keypad 1
+        runningVerticalDistance += gridVertLength/6
+        horVertVals = keypadDistance(gridHorizLength/3, gridVertLength/3, keypad)
+        runningHorizontalDistance += horVertVals[0]
+        runningVerticalDistance += horVertVals[1]
+    # handles if additional keypad is added
+    if len(gridCoord) > 4:
+        runningHorizontalDistance -= gridHorizLength/6 # resets to bottom left
+        runningVerticalDistance -= gridVertLength/6
+        runningHorizontalDistance += gridHorizLength/18 # centers for smaller keypad
+        runningVerticalDistance += gridVertLength/18
+        secondKeypad = int(gridCoord[-1])
+        horVertVals = keypadDistance(gridHorizLength/9, gridVertLength/9, secondKeypad)
+        runningHorizontalDistance += horVertVals[0]
+        runningVerticalDistance += horVertVals[1]
+    return [runningHorizontalDistance, runningVerticalDistance]
+
+
+def keypadDistance(horizKeypadLength, vertKeypadLength, keypad):
+    runningVerticalDistance = 0
+    runningHorizontalDistance = 0
+    if keypad in [4,5,6]:
+        runningVerticalDistance += vertKeypadLength
+    elif keypad in [7,8,9]:
+        runningVerticalDistance += vertKeypadLength*2
+
+    if keypad in [2,5,8]:
+        runningHorizontalDistance += horizKeypadLength
+    elif keypad in [3,6,9]:
+        runningHorizontalDistance += horizKeypadLength*2
+
+    return [runningHorizontalDistance, runningVerticalDistance]
+
+    # return horizontal and vertical distance from grid coord
 
 def recalculateSTValues():
     newGlobalDistST = dpg.get_value("spotterTargetDistChange")
@@ -179,14 +276,6 @@ def globalWindCalc():
         setValues(key, "adjusted")
 
 def setHotkeys():
-        # keyboard.add_hotkey(f"shift+1", lambda: updateFSByScreenCap(1,"target")) #spotterToTarget: dist and azi
-        # keyboard.add_hotkey(f"shift+2", lambda: updateFSByScreenCap(2,"target"))
-
-        # keyboard.add_hotkey(f"ctrl+1", lambda: updateFSByScreenCap(1,"gun")) #spotterToGun: dist and azi
-        # keyboard.add_hotkey(f"ctrl+2", lambda: updateFSByScreenCap(2,"gun"))
-
-        # keyboard.add_hotkey(f"ctrl+t", lambda: updateFSByScreenCap(1,"global")) #global 1: global target change, global 2: ref global SG change
-        # keyboard.add_hotkey(f"ctrl+g", lambda: updateFSByScreenCap(2,"global"))
         with open("keybinds.txt") as f:
             lines = f.readlines()
             for line in lines:
