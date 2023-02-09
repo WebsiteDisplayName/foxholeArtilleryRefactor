@@ -6,7 +6,7 @@ Download CUDA/GPU drivers to use EasyOCR in GPU mode
 
 To use: <br/>
 &emsp;cd foxholeArtilleryRefactor root folder <br/>
-&emsp;activate virtual environment: source venv/scripts/activate <br/>
+&emsp;pip install -r requirements.txt <br/>
 &emsp;cd into src <br/>
 &emsp;run in command line: py view.py
 
