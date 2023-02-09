@@ -150,7 +150,7 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
     # dpg.bind_theme(dark_theme)
 
 
-dpg.create_viewport(title='Artillery Calculator', width=800, height=500)
+dpg.create_viewport(title='Artillery Calculator', width=800, height=600)
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.set_primary_window("Primary Window", True)
