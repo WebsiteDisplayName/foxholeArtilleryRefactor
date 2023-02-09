@@ -46,8 +46,8 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="Grid Conv.")
         dpg.add_table_column(label="")
         dpg.add_table_column(label="Ref. Gun Name")
-        dpg.add_table_column(label="Gun")
-        dpg.add_table_column(label="Target")
+        dpg.add_table_column(label="Gun Coord.")
+        dpg.add_table_column(label="Target Coord.")
         dpg.add_table_column(label="Recalc. Grid ST")
         with dpg.table_row(tag=f"gridCoordRow"):
             dpg.add_text(default_value="")
