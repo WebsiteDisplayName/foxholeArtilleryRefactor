@@ -89,14 +89,14 @@ def add_guns():
     with dpg.table_row(parent="gun_table", tag=f"new_gun{gunCounter}"):
         dpg.add_input_text(tag=f"{gunCounter}1",
                            default_value=f"Gun {gunCounter}", callback=updateFiringSolution, user_data=[gunCounter, 1], width=80)  # Name
-        dpg.add_input_int(tag=f"{gunCounter}2",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 2], width=80, on_enter=True)  # distST
-        dpg.add_input_int(tag=f"{gunCounter}3",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 3], width=80, on_enter=True)  # aziST
-        dpg.add_input_int(tag=f"{gunCounter}4",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 4], width=80, on_enter=True)  # distSG
-        dpg.add_input_int(tag=f"{gunCounter}5",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 5], width=80, on_enter=True)  # aziSG
+        dpg.add_input_double(tag=f"{gunCounter}2",
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 2], width=80, on_enter=True, format="%.1f")  # distST
+        dpg.add_input_double(tag=f"{gunCounter}3",
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 3], width=80, on_enter=True, format="%.1f")  # aziST
+        dpg.add_input_double(tag=f"{gunCounter}4",
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 4], width=80, on_enter=True, format="%.1f")  # distSG
+        dpg.add_input_double(tag=f"{gunCounter}5",
+                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 5], width=80, on_enter=True, format="%.1f")  # aziSG
         dpg.add_text(tag=f"{gunCounter}6", default_value=0)  # adjDistGT
         dpg.add_text(tag=f"{gunCounter}7", default_value=0)  # adjAziGT
         dpg.add_text(tag=f"{gunCounter}8", default_value=0) # delta between old and new adjDistGT
@@ -320,14 +320,17 @@ def impliedWindCalc():
     aziGI = cH.findAzimuthGunToTarget(aziSI, distSI, origAziSG, origDistSG)
 
     # implied wind force, implied wind azimuth
-    impWF = cH.findDistanceGunToTarget(aziGI, distGI, origDistGT, origAziGT)
-    impWA = cH.findAzimuthGunToTarget(aziGI, distGI, origDistGT, origAziGT)
+    impWF = cH.findDistanceGunToTarget(aziGI, distGI, origAziGT, origDistGT)
+    impWA = cH.findAzimuthGunToTarget(aziGI, distGI, origAziGT, origDistGT)
 
-    dpg.set_value("impliedWindForce",impWF)
-    dpg.set_value("impliedWindAzimuth",impWA)
+    dpg.set_value("impliedWindForce",f"{impWF:.2f}")
+    dpg.set_value("impliedWindAzimuth",f"{impWA:.2f}")
     # have impval in row call callback, global push pushes whatever is in the cell to global & recalc
 
 def pushImpliedWindToGlobal():
+    impliedWindForce = dpg.get_value("impliedWindForce")
+    impliedWindForceAzimuth = dpg.get_value("impliedWindAzimuth") % 360
+
     
 
 def setHotkeys():

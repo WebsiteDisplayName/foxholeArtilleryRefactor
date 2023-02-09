@@ -75,10 +75,10 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
             dpg.add_text(default_value="")
             dpg.add_text(default_value="")
             dpg.add_text(default_value="")
-            dpg.add_input_int(tag=f"spotterTargetDistChange",  # distSG ref
-                              default_value=0, step=0, step_fast=0)
-            dpg.add_input_int(tag=f"spotterTargetAziChange",  # aziSG ref
-                              default_value=0, step=0, step_fast=0)
+            dpg.add_input_double(tag=f"spotterTargetDistChange",  # distSG ref
+                              default_value=0, step=0, step_fast=0, format="%.1f")
+            dpg.add_input_double(tag=f"spotterTargetAziChange",  # aziSG ref
+                              default_value=0, step=0, step_fast=0, format="%.1f")
             dpg.add_button(tag=f"targetChangeButton",  # clicking prompts are you sure you want to recalculate sg?
                            label="WARNING", callback=cT.recalculateSTValues)
 
@@ -96,10 +96,10 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
             dpg.add_text(default_value="")
             dpg.add_combo(tag="spotterPosDropdown",  # firing solution name ref
                           parent="spotterRow", items=[])
-            dpg.add_input_int(tag=f"spotterGunDistChange",  # distSG ref
-                              default_value=0, step=0, step_fast=0)
-            dpg.add_input_int(tag=f"spotterGunAziChange",  # aziSG ref
-                              default_value=0, step=0, step_fast=0)
+            dpg.add_input_double(tag=f"spotterGunDistChange",  # distSG ref
+                              default_value=0, step=0, step_fast=0, format="%.1f")
+            dpg.add_input_double(tag=f"spotterGunAziChange",  # aziSG ref
+                              default_value=0, step=0, step_fast=0, format="%.1f")
             dpg.add_button(tag=f"spotterChangeButton",  # clicking prompts are you sure you want to recalculate sg?
                            label="WARNING", callback=cT.recalculateSGValues)
 
@@ -112,14 +112,14 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="Recalc. Wind Azi")
         with dpg.table_row(tag=f"windRow"):
             dpg.add_text(default_value="")
-            dpg.add_input_int(tag=f"distSpotterToFlag",  # distST ref spotter to end of flag
-                              default_value=0, step=0, step_fast=0)
-            dpg.add_input_int(tag=f"aziSpotterToFlag",  # aziST ref
-                              default_value=0, step=0, step_fast=0)
-            dpg.add_input_int(tag=f"distSpotterToPole",  # distSG ref spotter to pole
-                              default_value=0, step=0, step_fast=0)
-            dpg.add_input_int(tag=f"aziSpotterToPole",  # aziSG ref
-                              default_value=0, step=0, step_fast=0)
+            dpg.add_input_double(tag=f"distSpotterToFlag",  # distST ref spotter to end of flag
+                              default_value=0, step=0, step_fast=0, format="%.1f")
+            dpg.add_input_double(tag=f"aziSpotterToFlag",  # aziST ref
+                              default_value=0, step=0, step_fast=0, format="%.1f")
+            dpg.add_input_double(tag=f"distSpotterToPole",  # distSG ref spotter to pole
+                              default_value=0, step=0, step_fast=0, format="%.1f")
+            dpg.add_input_double(tag=f"aziSpotterToPole",  # aziSG ref
+                              default_value=0, step=0, step_fast=0, format="%.1f")
             dpg.add_button(tag=f"windChangeButton",  # push to global
                            label="WARNING", callback=cT.globalWindCalc)
 
@@ -133,14 +133,14 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         with dpg.table_row(tag=f"impliedWindRow"):
             dpg.add_combo(tag="impliedWindDropdown",  # firing solution name ref
                           parent="impliedWindRow", items=[])
-            dpg.add_input_int(tag=f"distSpotterToImpact",  # distSI
-                              default_value=0, step=0, step_fast=0, callback=cT.impliedWindCalc)
-            dpg.add_input_int(tag=f"aziSpotterToImpact",  # aziSI
-                              default_value=0, step=0, step_fast=0, , callback=cT.impliedWindCalc)
+            dpg.add_input_double(tag=f"distSpotterToImpact",  # distSI
+                              default_value=0, step=0, step_fast=0, callback=cT.impliedWindCalc, format="%.1f")
+            dpg.add_input_double(tag=f"aziSpotterToImpact",  # aziSI
+                              default_value=0, step=0, step_fast=0, callback=cT.impliedWindCalc, format="%.1f")
             dpg.add_text(tag=f"impliedWindForce",  default_value=0)
             dpg.add_text(tag=f"impliedWindAzimuth", default_value=0)
             dpg.add_button(tag=f"impliedWindChangeButton",  # push to global
-                           label="WARNING", callback=cT.impliedWindCalc)
+                           label="WARNING", callback=cT.pushImpliedWindToGlobal)
 
 # themes https://github.com/hoffstadt/DearPyGui_Ext
 # https://github.com/hoffstadt/DearPyGui/discussions/1636
