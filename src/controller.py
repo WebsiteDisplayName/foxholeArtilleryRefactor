@@ -132,9 +132,30 @@ def gridCoordConv():
 
     hvValsGun = originDistFromGridCoord(gunGridCoord)
     hvValsTarget = originDistFromGridCoord(targetGridCoord)
-    horizDiff = abs(hvValsGun[0] - hvValsTarget[0])
-    vertDiff = abs(hvValsGun[1] - hvValsTarget[1])
-    hypotenuse = 
+    # azimuth is either 0 or 90, write up on paper
+    distSG = hvValsTarget[0] - hvValsGun[0] 
+    distST = hvValsTarget[1] - hvValsGun[1]
+    if distSG > 0: #gets azimuth for calc
+        aziSG = 270
+    else:
+        aziSG = 90
+    distSG = abs(distSG)
+    if distST > 0:
+        aziST = 0
+    else:
+        aziST = 180
+    distST = abs(distST)
+    # spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance
+    distGT = cH.findDistanceGunToTarget(aziST,distST,aziSG,distSG)
+    aziGT = cH.findAzimuthGunToTarget(aziST,distST,aziSG,distSG)
+
+    for key, val in firingSolutionDict.items():
+        if val.gunName == refGridGunName:   
+            val.spotterToTargetDistance = distGT
+            val.spotterToTargetAzimuth = aziGT
+            setValues(key,"target")
+            setValues(key,"adjusted")
+
 
 def originDistFromGridCoord(gridCoord):
     # start in bottom left

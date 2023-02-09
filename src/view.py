@@ -59,7 +59,7 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
             dpg.add_input_text(tag=f"gridCoord2",  # aziSG ref
                               default_value="", width=80)
             dpg.add_button(tag=f"gridCoordButton",  # clicking prompts are you sure you want to recalculate sg?
-                           label="WARNING", width=80, callback=cT.gridCoordConv())    
+                           label="WARNING", width=80, callback=cT.gridCoordConv)    
 
 
 
