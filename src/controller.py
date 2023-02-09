@@ -47,7 +47,10 @@ def updateFiringSolution(sender, app_data, user_data):
         return
     elif varToChange == 7:  # wind force
         for key, fs in firingSolutionDict.items():
-            fs.windForce = int(app_data)
+            if type(app_data) == str:
+                fs.windForce = app_data
+            else:
+                fs.windForce = int(app_data)
             setValues(key, "adjusted")
         return
     elif varToChange == 8:  # wind azimuth
@@ -328,10 +331,19 @@ def impliedWindCalc():
     # have impval in row call callback, global push pushes whatever is in the cell to global & recalc
 
 def pushImpliedWindToGlobal():
-    impliedWindForce = dpg.get_value("impliedWindForce")
-    impliedWindForceAzimuth = dpg.get_value("impliedWindAzimuth") % 360
+    impliedWindForce = float(dpg.get_value("impliedWindForce"))
+    impliedWindForceAzimuth = float(dpg.get_value("impliedWindAzimuth")) % 360
+    dpg.set_value("globalWindAzimuth",impliedWindForceAzimuth)
 
-    
+    impliedWindForceStr = f"IWF: {impliedWindForce:.2f}"
+    dpg.configure_item("windForceDropdown", items=[1,2,3, impliedWindForceStr])
+    dpg.set_value("windForceDropdown",impliedWindForceStr)
+
+    for key in range(1,gunCounter+1):
+        firingSolutionDict[key].windForce = impliedWindForceStr
+        firingSolutionDict[key].windAzimuth = impliedWindForceAzimuth
+        setValues(key, "adjusted")
+
 
 def setHotkeys():
         with open("keybinds.txt") as f:

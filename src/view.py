@@ -19,7 +19,7 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
 
         dpg.add_text(default_value="Wind Force")
         dpg.add_combo(tag="windForceDropdown", items=[1, 2, 3], default_value=1,
-                      callback=cT.updateFiringSolution, user_data=["global", 7], width=30)
+                      callback=cT.updateFiringSolution, user_data=["global", 7], width=95)
         dpg.add_text(default_value="Wind Azi")
         dpg.add_input_int(tag="globalWindAzimuth",
                           default_value=0, step=0, step_fast=0, callback=cT.updateFiringSolution, user_data=["global", 8], width=30)
