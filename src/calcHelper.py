@@ -158,21 +158,24 @@ def findWindAdjustedGunToTargetAziDist(unadjustedGunToTargetAzimuth, unadjustedG
         targetToGunAzimuth = unadjustedGunToTargetAzimuth + 180
     else:
         targetToGunAzimuth = unadjustedGunToTargetAzimuth - 180
+    
+    try:
+        extractedWF = float(windForce[5:])
+        adjustedGunToTargetAzimuth = findAzimuthGunToTarget(
+            oppositeWindAzimuth, extractedWF, targetToGunAzimuth, unadjustedGunToTargetDistance)
+        adjustedGunToTargetDist = findDistanceGunToTarget(
+            oppositeWindAzimuth, extractedWF, targetToGunAzimuth, unadjustedGunToTargetDistance)
 
-    if type(windForce) == int:
+    except:
+        windForce = int(windForce)
         adjustedGunToTargetAzimuth = findAzimuthGunToTarget(
             oppositeWindAzimuth, windForceMetersArray[windForce-1], targetToGunAzimuth, unadjustedGunToTargetDistance)
         adjustedGunToTargetDist = findDistanceGunToTarget(
             oppositeWindAzimuth, windForceMetersArray[windForce-1], targetToGunAzimuth, unadjustedGunToTargetDistance)
         if windForceMetersArray[windForce-1] == 0:
             adjustedGunToTargetAzimuth = unadjustedGunToTargetAzimuth
+        print(adjustedGunToTargetDist, adjustedGunToTargetAzimuth)
 
-    else: # "IWF: 50"
-        extractedWF = float(windForce[5:])
-        adjustedGunToTargetAzimuth = findAzimuthGunToTarget(
-            oppositeWindAzimuth, extractedWF, targetToGunAzimuth, unadjustedGunToTargetDistance)
-        adjustedGunToTargetDist = findDistanceGunToTarget(
-            oppositeWindAzimuth, extractedWF, targetToGunAzimuth, unadjustedGunToTargetDistance)
 
 
     return [unadjustedGunToTargetAzimuth, unadjustedGunToTargetDistance, adjustedGunToTargetAzimuth, adjustedGunToTargetDist]
