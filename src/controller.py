@@ -316,8 +316,8 @@ def impliedWindCalc():
     # findDistanceGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance)
     origDistSG = firingSolutionDict[refKey].spotterToGunDistance
     origAziSG = firingSolutionDict[refKey].spotterToGunAzimuth
-    origDistGT = firingSolutionDict[refKey].unadjustedGunToTargetDistance
-    origAziGT = firingSolutionDict[refKey].unadjustedGunToTargetAzimuth
+    origDistGT = firingSolutionDict[refKey].adjustedGunToTargetDistance # changed
+    origAziGT = firingSolutionDict[refKey].adjustedGunToTargetAzimuth
 
     distGI = cH.findDistanceGunToTarget(aziSI, distSI, origAziSG, origDistSG)
     aziGI = cH.findAzimuthGunToTarget(aziSI, distSI, origAziSG, origDistSG)
