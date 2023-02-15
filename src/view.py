@@ -137,8 +137,8 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
                               default_value=0, step=0, step_fast=0, callback=cT.impliedWindCalc, format="%.1f")
             dpg.add_input_double(tag=f"aziSpotterToImpact",  # aziSI
                               default_value=0, step=0, step_fast=0, callback=cT.impliedWindCalc, format="%.1f")
-            dpg.add_text(tag=f"impliedWindForce",  default_value=0)
-            dpg.add_text(tag=f"impliedWindAzimuth", default_value=0)
+            dpg.add_input_text(tag=f"impliedWindForce",  default_value=0)
+            dpg.add_input_text(tag=f"impliedWindAzimuth", default_value=0)
             dpg.add_button(tag=f"impliedWindChangeButton",  # push to global
                            label="WARNING", callback=cT.pushImpliedWindToGlobal)
 

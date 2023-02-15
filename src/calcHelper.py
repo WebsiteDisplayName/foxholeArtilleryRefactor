@@ -174,7 +174,6 @@ def findWindAdjustedGunToTargetAziDist(unadjustedGunToTargetAzimuth, unadjustedG
             oppositeWindAzimuth, windForceMetersArray[windForce-1], targetToGunAzimuth, unadjustedGunToTargetDistance)
         if windForceMetersArray[windForce-1] == 0:
             adjustedGunToTargetAzimuth = unadjustedGunToTargetAzimuth
-        print(adjustedGunToTargetDist, adjustedGunToTargetAzimuth)
 
 
 
