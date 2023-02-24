@@ -345,6 +345,33 @@ def pushImpliedWindToGlobal():
         setValues(key, "adjusted")
 
 
+def horizDeflCalc(sender, app_data, user_data):
+    distGI = float(dpg.get_value("distGunToImpactDeflection"))
+    azimuthDeflection = float(dpg.get_value("azimuthDeflection"))
+    offsetMetersDeflection = float(dpg.get_value("offsetMetersDeflection"))
+    holdConstant = str(dpg.get_value("holdConstantDropdown"))
+    # 1,2,3 = distGI, azi, metersOffset
+    changedInput = user_data[0]
+    optionList = ["distGI","Azi.","Offset Meters"]
+    for val in optionList:
+        if holdConstant == changedInput:
+            return
+        elif val not in [holdConstant, changedInput]:
+            outputVar = val
+    
+    if outputVar == optionList[0]: #distGI
+        # find length of side isosceles triangle
+        # (baseSide/2)/cosine(90-betaAngle/2)
+        adjacentAngleRadians = math.radians(90-azimuthDeflection/2)
+        newDistGI = (offsetMetersDeflection/2)/math.cos(adjacentAngleRadians) #inputs radians
+        dpg.set_value("distGunToImpactDeflection",newDistGI)
+    elif outputVar == optionList[1]: #Azi
+        newAzimuthDeflection = math.degrees(math.acos((2*distGI**2 - offsetMetersDeflection**2)/(2*distGI**2)))
+        dpg.set_value("azimuthDeflection",newAzimuthDeflection)
+    elif outputVar == optionList[2]: #Offset Meters
+        newOffsetMetersDeflection = math.sin(math.radians(azimuthDeflection))*distGI
+        dpg.set_value("offsetMetersDeflection",newOffsetMetersDeflection)
+
 def setHotkeys():
         with open("keybinds.txt") as f:
             lines = f.readlines()
@@ -391,6 +418,7 @@ def updateFSByScreenCap(key, type):
                 globalWindCalc()
 
         setValues(key, "adjusted")
+
 
 
 def fileOptions(sender, app_data):

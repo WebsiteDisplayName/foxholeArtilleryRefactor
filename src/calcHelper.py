@@ -36,6 +36,7 @@ def findTGSAngle(spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAz
         return 0
 
 
+
 def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance):
     aTGS = findTGSAngle(spotterToTargetAzimuth, spotterToTargetDistance,
                         spotterToGunAzimuth, spotterToGunDistance)

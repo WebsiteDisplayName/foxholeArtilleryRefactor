@@ -142,6 +142,27 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
             dpg.add_button(tag=f"impliedWindChangeButton",  # push to global
                            label="WARNING", callback=cT.pushImpliedWindToGlobal)
 
+
+
+    with dpg.table(tag="horizDeflectionTable", header_row=True):
+        dpg.add_table_column(label="Horiz. Defl.")
+        dpg.add_table_column(label="Hold Constant")
+        dpg.add_table_column(label="distGI")
+        dpg.add_table_column(label="Azi. CHG")
+        dpg.add_table_column(label="Offset Meters")
+        dpg.add_table_column(label="")
+        with dpg.table_row(tag=f"horizDeflectionRow"):
+            dpg.add_text(default_value="")
+            dpg.add_combo(tag="holdConstantDropdown",  # firing solution name ref
+                          parent="horizDeflectionRow", items=["distGI","Azi.","Offset Meters"], default_value="Azi.", width=120)
+            dpg.add_input_double(tag=f"distGunToImpactDeflection",  # distGI ref
+                              default_value=0, step=0, step_fast=0, callback=cT.horizDeflCalc, user_data=["distGI"], format="%.1f")
+            dpg.add_input_double(tag=f"azimuthDeflection",  # Azi. ref
+                              default_value=1, step=0, step_fast=0, callback=cT.horizDeflCalc, user_data=["Azi."], format="%.1f")
+            dpg.add_input_double(tag=f"offsetMetersDeflection",  # Offset meters ref
+                              default_value=0, step=0, step_fast=0, callback=cT.horizDeflCalc, user_data=["Offset Meters"], format="%.1f")
+            dpg.add_text(default_value="")
+
 # themes https://github.com/hoffstadt/DearPyGui_Ext
 # https://github.com/hoffstadt/DearPyGui/discussions/1636
 # https://github.com/hoffstadt/DearPyGui_Ext/blob/master/dearpygui_ext/themes.py
