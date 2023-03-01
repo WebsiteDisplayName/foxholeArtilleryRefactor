@@ -37,7 +37,7 @@ Advanced functions
     :Horiz. Defl.: Horizontal deflection, function that calculates how far distance shifts aim, given a set change in azimuth
         :distGI: Distance from *Gun* to *Impact*
         :Azi. CHG: Change in azimuth between two points of aim
-        :Offset meters: Offset distance on aim caused by shift in azimuth
+        :Offset meters: Offset distance on aim caused by shift in azimuth/angle, and proportional to distance
 
         
 
