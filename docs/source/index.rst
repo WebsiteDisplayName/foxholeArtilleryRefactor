@@ -1,10 +1,9 @@
-Welcome to Lumache's documentation!
+Foxhole Artillery Refactor Documentation
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+**Foxhole Artillery Refactor** is a Python desktop app that performs artillery calculations
+for `Foxhole <https://store.steampowered.com/app/505460/Foxhole/>`.
+
 
 Check out the :doc:`usage` section for further information, including
 how to :ref:`installation` the project.
@@ -17,6 +16,6 @@ Contents
 --------
 
 .. toctree::
-
+   installation
    usage
    api
