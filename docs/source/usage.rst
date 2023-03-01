@@ -49,6 +49,7 @@ Implied Wind Ref.
     2. Usage: quickly calculates wind values that carry over for future calculations
 
 Horiz. Defl.
+^^^^^^^^^^^^
     1. Functionality: calculates the affects of distance, change in azimuth, and meters of shift at that distance on each other
     2. Usage: suppose target is 300 meters away and I want to shift point of impact 20 meters to the right, what change in azimuth is necessary?
 
