@@ -3,7 +3,7 @@ Installation
 
 Advanced users
 --------------
-1. Go `here <https://github.com/WebsiteDisplayName/foxholeArtilleryRefactor>`_
+1. Go `here <https://github.com/WebsiteDisplayName/foxholeArtilleryRefactor/>`_
 2. Download the files:
     a. Option 1
         git clone https://github.com/WebsiteDisplayName/foxholeArtilleryRefactor
