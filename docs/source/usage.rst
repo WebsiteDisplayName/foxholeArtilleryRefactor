@@ -38,6 +38,19 @@ Advanced functions
       1. Functionality: changes all SG values for every gun row in the table based off of new *Spotter* and reference *Gun* relationship
       2. Usage: *Spotter* changes position, but does not want to adjust all SG values
 
+   Wind Flag
+   ^^^^^^^^^
+      1. Functionality: given the pole and flag tip location relative to a point, a vector that gives direction, i.e. azimuth, can be drawn from the pole to the flag
+      2. Usage: precisely calculate *Wind Azimuth* without havng to be aligned with the flag or fire rounds
+
+   Implied Wind Ref.
+   ^^^^^^^^^^^^^^^^^
+      1. Functionality: calculates implied wind values given point of aim and impact, given a reference gun
+      2. Usage: quickly calculates wind values that carry over for future calculations
+
+   Horiz. Defl.
+      1. Functionality: calculates the affects of distance, change in azimuth, and meters of shift at that distance on each other
+      2. Usage: suppose target is 300 meters away and I want to shift point of impact 20 meters to the right, what change in azimuth is necessary?
 
 Save/load firing tables
 -----------------------
