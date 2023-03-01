@@ -5,9 +5,9 @@ Advanced users
 --------------
 1. Go `here <https://github.com/WebsiteDisplayName/foxholeArtilleryRefactor/>`_
 2. Download the files:
-    a. option 1
+    a. Option 1
         git clone https://github.com/WebsiteDisplayName/foxholeArtilleryRefactor
-    b. option 2
+    b. Option 2
         1. Click on <> Code in green
         2. Download zip
         3. Save the zip into a folder
