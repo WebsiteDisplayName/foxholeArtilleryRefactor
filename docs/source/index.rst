@@ -17,5 +17,6 @@ Contents
 
 .. toctree::
    installation
+   glossary
    usage
-   api
+   
