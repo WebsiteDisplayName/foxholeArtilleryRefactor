@@ -5,8 +5,8 @@ Foxhole Artillery Refactor Documentation
 for `Foxhole <https://store.steampowered.com/app/505460/Foxhole/>`_.
 
 
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
+Refer to the :doc:`usage` section for functionality and :doc:`installation` for installing
+the project.
 
 .. note::
 
