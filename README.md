@@ -4,6 +4,6 @@
 Should use with [OnTopReplica](https://github.com/LorenzCK/OnTopReplica/releases) for in-game overlay <br/>
 &emsp;alt + tab: to enter inputs
 
-[Documentation](https://foxholeartilleryrefactor.readthedocs.io/en/latest/usage.html)
+[Documentation](https://foxholeartilleryrefactor.readthedocs.io/en/latest/index.html)
 
 ![Screenshot](images/appAppearance.png)
