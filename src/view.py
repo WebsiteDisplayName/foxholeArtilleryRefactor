@@ -175,6 +175,8 @@ dpg.create_viewport(title='Artillery Calculator', width=800, height=600)
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.set_primary_window("Primary Window", True)
-cT.setHotkeys() # insert hotkeys https://stackoverflow.com/questions/65057228/python-keyboard-module-wait-for-user
+# insert hotkeys https://stackoverflow.com/questions/65057228/python-keyboard-module-wait-for-user
+# https://github.com/hoffstadt/DearPyGui/discussions/1582 switch to specific tab
+# cT.setHotkeys() 
 dpg.start_dearpygui()
 dpg.destroy_context()
