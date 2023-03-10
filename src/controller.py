@@ -6,6 +6,7 @@ import ocr
 from tkinter import filedialog
 from tkinter import *
 import math
+import re
 
 # https://dearpygui.readthedocs.io/en/latest/documentation/item-creation.html
 # https://dearpygui.readthedocs.io/en/latest/tutorials/item-usage.html?highlight=current%20widget set values
@@ -169,8 +170,6 @@ def gridCoordConv():
 def originDistFromGridCoord(gridCoord):
     # start in bottom left
     # g9k3: 41 meter side
-    gridCoord = list(gridCoord)
-
     horizLetters = list('abcdefghijklmnopq')
     vertNumbers = list(range(1,16))
 
@@ -186,14 +185,32 @@ def originDistFromGridCoord(gridCoord):
     # distance from botton left of grid map (A15)
     runningHorizontalDistance = 0
     runningVerticalDistance = 0
-
-    horizLetter = gridCoord[0].lower()
-    vertNumber = int(gridCoord[1])
-    keypad = int(gridCoord[3]) 
-
     #789
     #456
     #123
+
+
+    # !!!! redo handles g15k3k3, handles double digit vertical number
+    # use regex on everything after first letter G(15K3K3)
+    # aziDist = re.compile(r'[A-Za-z\. ]+(\d+)m[A-Za-z\. ]+(\d+)')
+    # returnResult = aziDist.search(result).groups()
+
+    try:
+        x = re.search(r"(\w{1})(\d{1,})[Kk](\d)[Kk](\d)", gridCoord)
+        horizLetter = x.group(1).lower()
+        vertNumber = int(x.group(2))
+        keypad = int(x.group(3))
+        secondKeypad = int(x.group(4))
+        case = 1
+    except:
+        x = re.search(r"(\w{1})(\d{1,})[Kk](\d)", gridCoord)
+        horizLetter = x.group(1).lower()
+        vertNumber = int(x.group(2))
+        keypad = int(x.group(3))
+        case = 2
+
+
+
 
     # handles grid square (G9)
     runningHorizontalDistance += horizLettersDict[horizLetter]*gridHorizLength  
@@ -201,19 +218,18 @@ def originDistFromGridCoord(gridCoord):
 
     # handles keypad, convert to hor/vert distance
     # one part handles vertical and another conditional handles horiztonal
-    if len(gridCoord) >= 4:
+    if case == 1 or case == 2:
         runningHorizontalDistance += gridHorizLength/6 # moves to middle of keypad 1
         runningVerticalDistance += gridVertLength/6
         horVertVals = keypadDistance(gridHorizLength/3, gridVertLength/3, keypad)
         runningHorizontalDistance += horVertVals[0]
         runningVerticalDistance += horVertVals[1]
     # handles if additional keypad is added
-    if len(gridCoord) > 4:
+    if case == 1:
         runningHorizontalDistance -= gridHorizLength/6 # resets to bottom left
         runningVerticalDistance -= gridVertLength/6
         runningHorizontalDistance += gridHorizLength/18 # centers for smaller keypad
         runningVerticalDistance += gridVertLength/18
-        secondKeypad = int(gridCoord[-1])
         horVertVals = keypadDistance(gridHorizLength/9, gridVertLength/9, secondKeypad)
         runningHorizontalDistance += horVertVals[0]
         runningVerticalDistance += horVertVals[1]
