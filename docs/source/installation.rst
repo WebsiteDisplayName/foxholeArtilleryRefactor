@@ -16,8 +16,8 @@ Advanced users
 
     3. Create virtual environment:
         a. you will need to install python3, pip, virtualenv, & use the command line
-        b. virtualenv --python=python3.10 venv
-        c. source venv/scripts/activate
+        b. virtualenv -–python=python3.10 venv (py -3.10 -m venv venv), Note: must use ~ Python 3.10 or else program breaks
+        c. source venv/scripts/activate (venv/Scripts/activate)
             A. <deactivate>: deactivates virtual environment
             B. **virtual environment must be activated to use the program**
         d. pip install -r requirements.txt

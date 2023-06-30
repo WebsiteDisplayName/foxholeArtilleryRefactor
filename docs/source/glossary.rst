@@ -23,7 +23,7 @@ Advanced functions
 ------------------
     :Grid Conv.: Converts grid coordinates, i.e. "G9K3K7" or "G9K3", and pushes to *Spotter* to *Target*
     :ST Master: function that globally changes *Spotter* to *Target* values
-    :SG Master: function that globally changes *Spotter* to *Target* values based on new spotter position to reference Gun
+    :SG Master: function that globally changes *Spotter* to *Gun* values based on new spotter position to reference Gun
 
     :Wind Flag: function that calculates and globally pushes *Wind Azimuth* based on fly & hoist end, i.e. tip of flag vs. pole
     :distSF: Distance from *Spotter* to *Flag* (fly end/flag tip)
