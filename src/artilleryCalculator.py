@@ -7,21 +7,22 @@ class firingSolution:
     # set wind & weapon type values to global?, when they change, change all firingSolution object instance variables too?
     # class variables are default variables, change through function
 
-    spotterToTargetDistance = 0
-    spotterToTargetAzimuth = 0
-    spotterToGunDistance = 0
-    spotterToGunAzimuth = 0
-    adjustedGunToTargetDistance = 0
-    adjustedGunToTargetAzimuth = 0
+    def __init__(self):
+        self.spotterToTargetDistance = 0
+        self.spotterToTargetAzimuth = 0
+        self.spotterToGunDistance = 0
+        self.spotterToGunAzimuth = 0
+        self.adjustedGunToTargetDistance = 0
+        self.adjustedGunToTargetAzimuth = 0
 
-    unadjustedGunToTargetAzimuth = 0
-    unadjustedGunToTargetDistance = 0
+        self.unadjustedGunToTargetAzimuth = 0
+        self.unadjustedGunToTargetDistance = 0
 
-    oldAdjustedGunToTargetAzimuth = 0
-    oldAdjustedGunToTargetDistance = 0
-    windAzimuth = 0
-    windForce = 1
-    weaponType = 1  # 120mm & 150mm
+        self.oldAdjustedGunToTargetAzimuth = 0
+        self.oldAdjustedGunToTargetDistance = 0
+        self.windAzimuth = 0
+        self.windForce = 1
+        self.weaponType = 1  # 120mm & 150mm
 
     def recalcGunToTarget(self):
         gttArr = cH.comprehensiveSpotterArtillery(self.spotterToTargetAzimuth, self.spotterToTargetDistance,
