@@ -2,7 +2,6 @@ import calcHelper as cH
 
 # calcHelper.findAzimuthGunToTarget
 
-
 class firingSolution:
     # set wind & weapon type values to global?, when they change, change all firingSolution object instance variables too?
     # class variables are default variables, change through function
@@ -22,7 +21,7 @@ class firingSolution:
         self.oldAdjustedGunToTargetDistance = 0
         self.windAzimuth = 0
         self.windForce = 1
-        self.weaponType = 1  # 120mm & 150mm
+        self.weaponType = list(cH.WEAPONTYPEWINDFORCES.keys())[0]
 
     def recalcGunToTarget(self):
         gttArr = cH.comprehensiveSpotterArtillery(self.spotterToTargetAzimuth, self.spotterToTargetDistance,

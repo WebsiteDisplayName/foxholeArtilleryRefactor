@@ -40,10 +40,8 @@ def updateFiringSolution(sender, app_data, user_data):
     elif varToChange == 5:  # aziSG
         firingSolutionDict[user_data[0]].spotterToGunAzimuth = app_data % 360
     elif varToChange == 6:  # weapon type
-        weaponList = ["120mm & 150mm", "Storm cannon", "Mortars"]
-        weaponNum = weaponList.index(app_data) + 1
         for key, fs in firingSolutionDict.items():
-            fs.weaponType = int(weaponNum)
+            fs.weaponType = app_data
             setValues(key, "adjusted")
         return
     elif varToChange == 7:  # wind force

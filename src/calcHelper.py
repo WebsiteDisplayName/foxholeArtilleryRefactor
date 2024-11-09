@@ -1,5 +1,16 @@
 # use classes because some data needs to persist until changed
 import math
+global WEAPONTYPEWINDFORCES
+WEAPONTYPEWINDFORCES= {
+    # weapon type
+    # 1 = normal artillery (i.e. 120mm & 150mm)
+    # 2 = storm cannon (i.e. 300mm)
+    # 3 = mortars
+    "120mm & 150mm": [0, 15, 30],
+    "Storm cannon": [0, 125, 250],
+    "Mortars": [0, 10, 20]
+
+}
 
 
 def findTSGAngle(spotterToTargetAzimuth, spotterToGunAzimuth):
@@ -129,10 +140,6 @@ def findAzimuthGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spot
             return result
 
 
-# weapon type
-    # 1 = normal artillery (i.e. 120mm & 150mm)
-    # 2 = storm cannon (i.e. 300mm)
-    # 3 = mortars
 
 
 def findWindAdjustedGunToTargetAziDist(unadjustedGunToTargetAzimuth, unadjustedGunToTargetDistance, windAzimuth, windForce, weaponType):
@@ -146,13 +153,7 @@ def findWindAdjustedGunToTargetAziDist(unadjustedGunToTargetAzimuth, unadjustedG
     elif windAzimuth >= 180:
         oppositeWindAzimuth = windAzimuth - 180
 
-    # ******* add more weapon types and windForce to meter conversions whenever possible *******
-    if weaponType == 1:  # 120mm & 150mm
-        windForceMetersArray = [0, 15, 30]
-    elif weaponType == 2:  # storm cannon
-        windForceMetersArray = [0, 125, 250]
-    elif weaponType == 3:  # mortars
-        windForceMetersArray = [0, 10, 20]
+    windForceMetersArray = WEAPONTYPEWINDFORCES[weaponType]
 
     # spotterToGunAzimuth is unadjustedGunToTarget back azimuth
     if unadjustedGunToTargetAzimuth < 180:

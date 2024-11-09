@@ -14,8 +14,7 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_button(label="Add Guns", callback=cT.add_guns)
         dpg.add_button(label="Delete Guns",
                        callback=cT.delete_guns, tag="delete_gun")
-        dpg.add_combo(tag="weaponDropdown", items=["120mm & 150mm", "Storm cannon",
-                      "Mortars"], default_value="120mm & 150mm", callback=cT.updateFiringSolution, user_data=["global", 6], width=120)
+        dpg.add_combo(tag="weaponDropdown", items=list(cH.WEAPONTYPEWINDFORCES.keys()), default_value=list(cH.WEAPONTYPEWINDFORCES.keys())[0], callback=cT.updateFiringSolution, user_data=["global", 6], width=120)
 
         dpg.add_text(default_value="Wind Force")
         dpg.add_combo(tag="windForceDropdown", items=[1, 2, 3], default_value=1,
