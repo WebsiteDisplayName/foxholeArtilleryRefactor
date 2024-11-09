@@ -64,7 +64,10 @@ def updateFiringSolution(sender, app_data, user_data):
 
 def setValues(key,type): #key is key from dictionary, type = [adjusted, target, gun]
     firingSolutionDict[key].recalcGunToTarget()
-    if type == "target":
+    if type == "gunname":
+        dpg.set_value(
+            f"{key}1", firingSolutionDict[key].gunName)
+    elif type == "target":
         dpg.set_value(
             f"{key}2", round(firingSolutionDict[key].spotterToTargetDistance,2))
         dpg.set_value(
@@ -459,6 +462,7 @@ def fileOptions(sender, app_data):
                 firingSolutionDict[gunCounter].spotterToGunAzimuth = valList[4]
                 firingSolutionDict[gunCounter].adjustedGunToTargetDistance = valList[5]
                 firingSolutionDict[gunCounter].adjustedGunToTargetAzimuth = valList[6]
+                setValues(gunCounter, "gunname")
                 setValues(gunCounter, "target")
                 setValues(gunCounter, "gun")
                 setValues(gunCounter, "adjusted")
