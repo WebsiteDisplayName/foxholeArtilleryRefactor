@@ -1,19 +1,18 @@
-import controller as cT
 import math
 import re
 
+import controller as cT
 
 if __name__ == "__main__":
     # grid_coord = "G15K9K5"
     grid_coord = "G15K9"
     # horiz_letter = grid_coord[0].lower()
     # vert_number = int(grid_coord[1])
-    # keypad = int(grid_coord[3]) 
+    # keypad = int(grid_coord[3])
 
-    #789
-    #456
-    #123
-
+    # 789
+    # 456
+    # 123
 
     # !!!! redo handles g15k3k3, handles double digit vertical number
     # use regex on everything after first letter G(15K3K3)

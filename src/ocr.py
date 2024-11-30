@@ -2,16 +2,17 @@
 # Screenshot area
 
 
+import os
+import re
+import sys
+
+import easyocr
+import keyboard
+import numpy as np
+import PIL
 #! python3
 import pyautogui
-import sys
-import keyboard
 from PIL import Image
-import PIL
-import os
-import numpy as np
-import easyocr
-import re
 
 # -50, 0, 100, 100
 # small box around cursor screen cap
@@ -42,9 +43,9 @@ def screenshotMouseArea(fileName, left=-38, top=14, width=74, height=40):
 def extractAziDistText(fileName):
     try:
         IMAGE_PATH = f"../images/{fileName}.jpg"
-        reader = easyocr.Reader(['en']) #verbose=False
+        reader = easyocr.Reader(["en"])  # verbose=False
         result = reader.readtext(IMAGE_PATH, paragraph="False")[0][1]
-        aziDist = re.compile(r'[A-Za-z\. ]+(\d+)m[A-Za-z\. ]+(\d+)')
+        aziDist = re.compile(r"[A-Za-z\. ]+(\d+)m[A-Za-z\. ]+(\d+)")
         returnResult = aziDist.search(result).groups()
         return list(map(int, returnResult))
     except:
@@ -56,7 +57,7 @@ def screepCapExtract(filename):
     return extractAziDistText(filename)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # https://github.com/boppreh/keyboard#api
     # counter = 0

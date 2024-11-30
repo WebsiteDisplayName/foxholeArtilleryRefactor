@@ -1,6 +1,5 @@
 import calc_helper as cH
 
-# calcHelper.find_azimuth_gun_target
 
 class FiringSolution:
     # set wind & weapon type values to global?, when they change, change all FiringSolution object instance variables too?
@@ -24,12 +23,23 @@ class FiringSolution:
         self.weapon_type = list(cH.WEAPONTYPEWINDFORCES.keys())[0]
 
     def recalc_gun_target(self):
-        get_attr = cH.comprehensiveSpotterArtillery(self.spotter_target_azimuth, self.spotter_target_distance,
-                                                  self.spotter_gun_azimuth, self.spotter_gun_distance, self.wind_azimuth, self.wind_force, self.weapon_type)
+        get_attr = cH.comprehensiveSpotterArtillery(
+            self.spotter_target_azimuth,
+            self.spotter_target_distance,
+            self.spotter_gun_azimuth,
+            self.spotter_gun_distance,
+            self.wind_azimuth,
+            self.wind_force,
+            self.weapon_type,
+        )
         self.unadjusted_gun_target_azimuth = get_attr[0]
         self.unadjusted_gun_target_distance = get_attr[1]
-        self.oldadjusted_gun_target_azimuth = get_attr[2] - self.adjusted_gun_target_azimuth
-        self.oldadjusted_gun_target_distance = get_attr[3] - self.adjusted_gun_target_distance
+        self.oldadjusted_gun_target_azimuth = (
+            get_attr[2] - self.adjusted_gun_target_azimuth
+        )
+        self.oldadjusted_gun_target_distance = (
+            get_attr[3] - self.adjusted_gun_target_distance
+        )
         self.adjusted_gun_target_azimuth = get_attr[2]
         self.adjusted_gun_target_distance = get_attr[3]
 
