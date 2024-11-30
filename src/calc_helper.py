@@ -33,113 +33,13 @@ def find_distance_gun_target(spotter_target_azimuth, spotter_target_distance, sp
 
     return distGunToTarget
 
-
-def findTGSAngle(spotter_target_azimuth, spotter_target_distance, spotter_gun_azimuth, spotter_gun_distance):
-    dGT = find_distance_gun_target(
-        spotter_target_azimuth, spotter_target_distance, spotter_gun_azimuth, spotter_gun_distance)
-    dST = spotter_target_distance
-    dSG = spotter_gun_distance
-    try:
-        aTGS = math.degrees(math.acos((dGT**2 + dSG**2 - dST**2)/(2*dGT*dSG)))
-        return aTGS
-    except:
-        return 0
-
-
-
 def find_azimuth_gun_target(spotter_target_azimuth, spotter_target_distance, spotter_gun_azimuth, spotter_gun_distance):
-    aTGS = findTGSAngle(spotter_target_azimuth, spotter_target_distance,
-                        spotter_gun_azimuth, spotter_gun_distance)
-    aTSG = findTSGAngle(spotter_target_azimuth, spotter_gun_azimuth)
-    aSTG = 180 - (aTGS + aTSG)
-    azi_sg = spotter_gun_azimuth
-    azi_st = spotter_target_azimuth
+    target_x = spotter_target_distance*math.sin(math.radians(spotter_target_azimuth))
+    target_y = spotter_target_distance*math.cos(math.radians(spotter_target_azimuth))
+    gun_x = spotter_gun_distance*math.sin(math.radians(spotter_gun_azimuth))
+    gun_y = spotter_gun_distance*math.cos(math.radians(spotter_gun_azimuth))
 
-    if aTGS == 0:  # return backazimuth of spotterToGun
-        if spotter_gun_distance == 0:
-            return spotter_target_azimuth
-        elif spotter_target_distance == 0:
-            return spotter_gun_azimuth + 180 if spotter_gun_azimuth <= 180 else spotter_gun_azimuth - 180
-        elif spotter_target_azimuth != spotter_gun_azimuth:
-            return spotter_target_azimuth
-        else:
-            if spotter_target_azimuth >= 180:
-                return spotter_target_azimuth - 180
-            else:
-                return spotter_target_azimuth + 180
-    elif (azi_sg >= 180) and (azi_st <= 180) and (azi_sg - 180 > azi_st):
-        result = (azi_sg - 180) - aTGS
-        if result < 0:
-            return (result + 360)
-        elif result >= 360:
-            return (result - 360)
-        else:
-            return result
-
-    elif (azi_sg >= 180) and (azi_st <= 180) and (azi_sg - 180 < azi_st):
-        result = (azi_sg - 180) + aTGS
-        if result < 0:
-            return (result + 360)
-        elif result >= 360:
-            return (result - 360)
-        else:
-            return result
-
-    elif (azi_sg < 180) and (azi_st >= 180) and (azi_sg + 180 > azi_st):
-        result = (azi_sg + 180) - aTGS
-        if result < 0:
-            return (result + 360)
-        elif result >= 360:
-            return (result - 360)
-        else:
-            return result
-    elif (azi_sg < 180) and (azi_st >= 180) and (azi_sg + 180 < azi_st):
-        result = (azi_sg + 180) + aTGS
-        if result < 0:
-            return (result + 360)
-        elif result >= 360:
-            return (result - 360)
-        else:
-            return result
-
-    elif (azi_sg >= 180) and (azi_st >= 180) and (azi_sg > azi_st):
-        result = (azi_sg - 180) + aTGS
-        if result < 0:
-            return (result + 360)
-        elif result >= 360:
-            return (result - 360)
-        else:
-            return result
-
-    elif (azi_sg >= 180) and (azi_st >= 180) and (azi_sg < azi_st):
-        result = (azi_sg - 180) - aTGS
-        if result < 0:
-            return (result + 360)
-        elif result >= 360:
-            return (result - 360)
-        else:
-            return result
-
-    elif (azi_sg < 180) and (azi_st < 180) and (azi_sg > azi_st):
-        result = (azi_sg + 180) + aTGS
-        if result < 0:
-            return (result + 360)
-        elif result >= 360:
-            return (result - 360)
-        else:
-            return result
-
-    elif (azi_sg < 180) and (azi_st < 180) and (azi_sg <= azi_st):
-        result = (azi_sg + 180) - aTGS
-        if result < 0:
-            return (result + 360)
-        elif result >= 360:
-            return (result - 360)
-        else:
-            return result
-
-
-
+    return (450 - math.atan2(target_y - gun_y, target_x - gun_x)*180/math.pi) % 360
 
 def findWindAdjustedGunToTargetAziDist(unadjusted_gun_target_azimuth, unadjusted_gun_target_distance, wind_azimuth, wind_force, weapon_type):
     # target takes the spotter role in the triangle calculation
