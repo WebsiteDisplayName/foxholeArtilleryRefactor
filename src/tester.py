@@ -4,11 +4,11 @@ import re
 
 
 if __name__ == "__main__":
-    # gridCoord = "G15K9K5"
-    gridCoord = "G15K9"
-    # horizLetter = gridCoord[0].lower()
-    # vertNumber = int(gridCoord[1])
-    # keypad = int(gridCoord[3]) 
+    # grid_coord = "G15K9K5"
+    grid_coord = "G15K9"
+    # horiz_letter = grid_coord[0].lower()
+    # vert_number = int(grid_coord[1])
+    # keypad = int(grid_coord[3]) 
 
     #789
     #456
@@ -20,13 +20,13 @@ if __name__ == "__main__":
     # aziDist = re.compile(r'[A-Za-z\. ]+(\d+)m[A-Za-z\. ]+(\d+)')
     # returnResult = aziDist.search(result).groups()
     try:
-        x = re.search(r"(\w{1})(\d{1,})[Kk](\d)[Kk](\d)", gridCoord)
+        x = re.search(r"(\w{1})(\d{1,})[Kk](\d)[Kk](\d)", grid_coord)
         print(x.group(1))
         print(x.group(2))
         print(x.group(3))
         print(x.group(4))
     except:
-        x = re.search(r"(\w{1})(\d{1,})[Kk](\d)", gridCoord)
+        x = re.search(r"(\w{1})(\d{1,})[Kk](\d)", grid_coord)
         print(x.group(1))
         print(x.group(2))
         print(x.group(3))

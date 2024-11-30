@@ -1,10 +1,9 @@
 import dearpygui.dearpygui as dpg
-import artilleryCalculator as aC
-import calcHelper as cH
+import artillery_calculator as aC
+import calc_helper as cH
 import keyboard
 import ocr
 from tkinter import filedialog
-from tkinter import *
 import math
 import re
 
@@ -12,124 +11,122 @@ import re
 # https://dearpygui.readthedocs.io/en/latest/tutorials/item-usage.html?highlight=current%20widget set values
 # https://dearpygui.readthedocs.io/en/latest/documentation/item-callbacks.html
 # https://dearpygui.readthedocs.io/en/latest/documentation/tables.html
-global gunCounter
-gunCounter = 0
-firingSolutionDict = {}
+GUN_COUNTER = 0
+FIRING_SOLUTION_DICT = {}
 
 # wind azimuth is direction it is going towards, 0 = wind is blowing North
 
 
-def updateFiringSolution(sender, app_data, user_data):
-    varToChange = user_data[1]
-    if varToChange == 1:  # gun name I changed this
-        firingSolutionDict[user_data[0]].gunName = app_data
+def update_firing_solution(sender, app_data, user_data):
+    var_to_change = user_data[1]
+    if var_to_change == 1:  # gun name I changed this
+        FIRING_SOLUTION_DICT[user_data[0]].gun_name = app_data
         dpg.configure_item("gridGunDropdown", items=[
-            firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+            FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
         dpg.configure_item("spotterPosDropdown", items=[
-            firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+            FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
         dpg.configure_item("impliedWindDropdown", items=[
-            firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+            FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
 
-    elif varToChange == 2:  # distST
-        firingSolutionDict[user_data[0]].spotterToTargetDistance = app_data
-    elif varToChange == 3:  # aziST
-        firingSolutionDict[user_data[0]
-                           ].spotterToTargetAzimuth = app_data % 360
-    elif varToChange == 4:  # distSG
-        firingSolutionDict[user_data[0]].spotterToGunDistance = app_data
-    elif varToChange == 5:  # aziSG
-        firingSolutionDict[user_data[0]].spotterToGunAzimuth = app_data % 360
-    elif varToChange == 6:  # weapon type
-        for key, fs in firingSolutionDict.items():
-            fs.weaponType = app_data
-            setValues(key, "adjusted")
+    elif var_to_change == 2:  # dist_st
+        FIRING_SOLUTION_DICT[user_data[0]].spotter_target_distance = app_data
+    elif var_to_change == 3:  # azi_st
+        FIRING_SOLUTION_DICT[user_data[0]
+                           ].spotter_target_azimuth = app_data % 360
+    elif var_to_change == 4:  # dist_sg
+        FIRING_SOLUTION_DICT[user_data[0]].spotter_gun_distance = app_data
+    elif var_to_change == 5:  # azi_sg
+        FIRING_SOLUTION_DICT[user_data[0]].spotter_gun_azimuth = app_data % 360
+    elif var_to_change == 6:  # weapon type
+        for key, fs in FIRING_SOLUTION_DICT.items():
+            fs.weapon_type = app_data
+            set_values(key, "adjusted")
         return
-    elif varToChange == 7:  # wind force
-        for key, fs in firingSolutionDict.items():
-            if type(app_data) == str:
-                fs.windForce = app_data
+    elif var_to_change == 7:  # wind force
+        for key, fs in FIRING_SOLUTION_DICT.items():
+            if isinstance(app_data, str):
+                fs.wind_force = app_data
             else:
-                fs.windForce = int(app_data)
-            setValues(key, "adjusted")
+                fs.wind_force = int(app_data)
+            set_values(key, "adjusted")
         return
-    elif varToChange == 8:  # wind azimuth
-        for key, fs in firingSolutionDict.items():
-            fs.windAzimuth = int(app_data) % 360
-            setValues(key, "adjusted")
+    elif var_to_change == 8:  # wind azimuth
+        for key, fs in FIRING_SOLUTION_DICT.items():
+            fs.wind_azimuth = int(app_data) % 360
+            set_values(key, "adjusted")
         return
-    setValues(user_data[0], "adjusted")
+    set_values(user_data[0], "adjusted")
 
 
-def setValues(key,type): #key is key from dictionary, type = [adjusted, target, gun]
-    firingSolutionDict[key].recalcGunToTarget()
+def set_values(key,type): #key is key from dictionary, type = [adjusted, target, gun]
+    FIRING_SOLUTION_DICT[key].recalc_gun_target()
     if type == "gunname":
         dpg.set_value(
-            f"{key}1", firingSolutionDict[key].gunName)
+            f"{key}1", FIRING_SOLUTION_DICT[key].gun_name)
     elif type == "target":
         dpg.set_value(
-            f"{key}2", round(firingSolutionDict[key].spotterToTargetDistance,2))
+            f"{key}2", round(FIRING_SOLUTION_DICT[key].spotter_target_distance,2))
         dpg.set_value(
-            f"{key}3", round(firingSolutionDict[key].spotterToTargetAzimuth,2))
+            f"{key}3", round(FIRING_SOLUTION_DICT[key].spotter_target_azimuth,2))
     elif type == "gun":
         dpg.set_value(
-            f"{key}4", round(firingSolutionDict[key].spotterToGunDistance,2))
+            f"{key}4", round(FIRING_SOLUTION_DICT[key].spotter_gun_distance,2))
         dpg.set_value(
-            f"{key}5", round(firingSolutionDict[key].spotterToGunAzimuth,2))
+            f"{key}5", round(FIRING_SOLUTION_DICT[key].spotter_gun_azimuth,2))
     elif type == "adjusted":
         dpg.set_value(
-            f"{key}6", round(firingSolutionDict[key].adjustedGunToTargetDistance,2))
+            f"{key}6", round(FIRING_SOLUTION_DICT[key].adjusted_gun_target_distance,2))
         dpg.set_value(
-            f"{key}7", round(firingSolutionDict[key].adjustedGunToTargetAzimuth,2))
+            f"{key}7", round(FIRING_SOLUTION_DICT[key].adjusted_gun_target_azimuth,2))
         dpg.set_value(
-            f"{key}8", round(firingSolutionDict[key].oldAdjustedGunToTargetDistance,2))
+            f"{key}8", round(FIRING_SOLUTION_DICT[key].oldadjusted_gun_target_distance,2))
         dpg.set_value(
-            f"{key}9", round(firingSolutionDict[key].oldAdjustedGunToTargetAzimuth,2))
+            f"{key}9", round(FIRING_SOLUTION_DICT[key].oldadjusted_gun_target_azimuth,2))
 
 
 def add_guns():
-    global gunCounter
-    gunCounter += 1
-    newFS = aC.firingSolution()
-    firingSolutionDict[gunCounter] = newFS
-    with dpg.table_row(parent="gun_table", tag=f"new_gun{gunCounter}"):
-        dpg.add_input_text(tag=f"{gunCounter}1",
-                           default_value=f"Gun {gunCounter}", callback=updateFiringSolution, user_data=[gunCounter, 1], width=80)  # Name
-        dpg.add_input_double(tag=f"{gunCounter}2",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 2], width=80, on_enter=True, format="%.1f")  # distST
-        dpg.add_input_double(tag=f"{gunCounter}3",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 3], width=80, on_enter=True, format="%.1f")  # aziST
-        dpg.add_input_double(tag=f"{gunCounter}4",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 4], width=80, on_enter=True, format="%.1f")  # distSG
-        dpg.add_input_double(tag=f"{gunCounter}5",
-                          default_value=0, step=0, step_fast=0, callback=updateFiringSolution, user_data=[gunCounter, 5], width=80, on_enter=True, format="%.1f")  # aziSG
-        dpg.add_text(tag=f"{gunCounter}6", default_value=0)  # adjDistGT
-        dpg.add_text(tag=f"{gunCounter}7", default_value=0)  # adjAziGT
-        dpg.add_text(tag=f"{gunCounter}8", default_value=0) # delta between old and new adjDistGT
-        dpg.add_text(tag=f"{gunCounter}9", default_value=0) # delta between old and new adjDistGT
-    # I changed this
-    firingSolutionDict[gunCounter].gunName = f"Gun {gunCounter}"
+    global GUN_COUNTER
+    GUN_COUNTER += 1
+    new_fs = aC.FiringSolution()
+    FIRING_SOLUTION_DICT[GUN_COUNTER] = new_fs
+    with dpg.table_row(parent="gun_table", tag=f"new_gun{GUN_COUNTER}"):
+        dpg.add_input_text(tag=f"{GUN_COUNTER}1",
+                           default_value=f"Gun {GUN_COUNTER}", callback=update_firing_solution, user_data=[GUN_COUNTER, 1], width=80)  # Name
+        dpg.add_input_double(tag=f"{GUN_COUNTER}2",
+                          default_value=0.0, step=0, step_fast=0, callback=update_firing_solution, user_data=[GUN_COUNTER, 2], width=80, on_enter=True, format="%.1f")  # dist_st
+        dpg.add_input_double(tag=f"{GUN_COUNTER}3",
+                          default_value=0.0, step=0, step_fast=0, callback=update_firing_solution, user_data=[GUN_COUNTER, 3], width=80, on_enter=True, format="%.1f")  # azi_st
+        dpg.add_input_double(tag=f"{GUN_COUNTER}4",
+                          default_value=0.0, step=0, step_fast=0, callback=update_firing_solution, user_data=[GUN_COUNTER, 4], width=80, on_enter=True, format="%.1f")  # dist_sg
+        dpg.add_input_double(tag=f"{GUN_COUNTER}5",
+                          default_value=0.0, step=0, step_fast=0, callback=update_firing_solution, user_data=[GUN_COUNTER, 5], width=80, on_enter=True, format="%.1f")  # azi_sg
+        dpg.add_text(tag=f"{GUN_COUNTER}6", default_value=0.0)  # adjDistGT
+        dpg.add_text(tag=f"{GUN_COUNTER}7", default_value=0.0)  # adjAziGT
+        dpg.add_text(tag=f"{GUN_COUNTER}8", default_value=0.0) # delta between old and new adjDistGT
+        dpg.add_text(tag=f"{GUN_COUNTER}9", default_value=0.0) # delta between old and new adjDistGT
+    FIRING_SOLUTION_DICT[GUN_COUNTER].gun_name = f"Gun {GUN_COUNTER}"
     dpg.configure_item("gridGunDropdown", items=[
-        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+        FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
     dpg.configure_item("spotterPosDropdown", items=[
-        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+        FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
     dpg.configure_item("impliedWindDropdown", items=[
-        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+        FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
 
 
 def delete_guns():
-    global gunCounter
-    if gunCounter >= 1:
-        dpg.delete_item(f"new_gun{gunCounter}")
-        del firingSolutionDict[gunCounter]
-        gunCounter -= 1
+    global GUN_COUNTER
+    if GUN_COUNTER >= 1:
+        dpg.delete_item(f"new_gun{GUN_COUNTER}")
+        del FIRING_SOLUTION_DICT[GUN_COUNTER]
+        GUN_COUNTER -= 1
     dpg.configure_item("gridGunDropdown", items=[
-        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+        FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
     dpg.configure_item("spotterPosDropdown", items=[
-        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+        FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
     dpg.configure_item("impliedWindDropdown", items=[
-        firingSolutionDict[key].gunName for key, val in firingSolutionDict.items()])
+        FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
 
-def gridCoordConv():
+def grid_coord_conv():
     # a1 top left, q15 bottom right
     # g9 125 meter side
     # g9k3: 41 meter side
@@ -137,55 +134,55 @@ def gridCoordConv():
     # first calculate horizontal and vertical of both points in distance, then subtract
     # find length of two sides at 90, calc azimuth and distance of hypotenuse
     # tactic: a1 = top left of grid square, keypads add distance?
-    refGridGunName =dpg.get_value("gridGunDropdown")
-    gunGridCoord = dpg.get_value("gridCoord1")
-    targetGridCoord = dpg.get_value("gridCoord2")
+    ref_grid_gun_name =dpg.get_value("gridGunDropdown")
+    gun_grid_coord = dpg.get_value("grid_coord1")
+    target_grid_coord = dpg.get_value("grid_coord2")
 
-    hvValsGun = originDistFromGridCoord(gunGridCoord)
-    hvValsTarget = originDistFromGridCoord(targetGridCoord)
+    horiz_vals_gun = origin_dist_from_grid_coord(gun_grid_coord)
+    horiz_vals_target = origin_dist_from_grid_coord(target_grid_coord)
     # azimuth is either 0 or 90, write up on paper
-    distSG = hvValsTarget[0] - hvValsGun[0] 
-    distST = hvValsTarget[1] - hvValsGun[1]
-    if distSG > 0: #gets azimuth for calc
-        aziSG = 270
+    dist_sg = horiz_vals_target[0] - horiz_vals_gun[0] 
+    dist_st = horiz_vals_target[1] - horiz_vals_gun[1]
+    if dist_sg > 0: #gets azimuth for calc
+        azi_sg = 270
     else:
-        aziSG = 90
-    distSG = abs(distSG)
-    if distST > 0:
-        aziST = 0
+        azi_sg = 90
+    dist_sg = abs(dist_sg)
+    if dist_st > 0:
+        azi_st = 0
     else:
-        aziST = 180
-    distST = abs(distST)
-    # spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance
-    distGT = cH.findDistanceGunToTarget(aziST,distST,aziSG,distSG)
-    aziGT = cH.findAzimuthGunToTarget(aziST,distST,aziSG,distSG)
+        azi_st = 180
+    dist_st = abs(dist_st)
+    # spotter_target_azimuth, spotter_target_distance, spotter_gun_azimuth, spotter_gun_distance
+    dist_gt = cH.find_distance_gun_target(azi_st,dist_st,azi_sg,dist_sg)
+    azi_gt = cH.find_azimuth_gun_target(azi_st,dist_st,azi_sg,dist_sg)
 
-    for key, val in firingSolutionDict.items():
-        if val.gunName == refGridGunName:   
-            val.spotterToTargetDistance = distGT
-            val.spotterToTargetAzimuth = aziGT
-            setValues(key,"target")
-            setValues(key,"adjusted")
+    for key, val in FIRING_SOLUTION_DICT.items():
+        if val.gun_name == ref_grid_gun_name:   
+            val.spotter_target_distance = dist_gt
+            val.spotter_target_azimuth = azi_gt
+            set_values(key,"target")
+            set_values(key,"adjusted")
 
 
-def originDistFromGridCoord(gridCoord):
+def origin_dist_from_grid_coord(grid_coord):
     # start in bottom left
     # g9k3: 41 meter side
-    horizLetters = list('abcdefghijklmnopq')
-    vertNumbers = list(range(1,16))
+    horiz_letters = list('abcdefghijklmnopq')
+    vert_numbers = list(range(1,16))
 
-    horizLettersDict = dict(zip(horizLetters,list(range(0,len(horizLetters))))) # 'a':0, 'b':1
-    vertNumbersDict = dict(zip(vertNumbers[::-1], list(range(0,len(vertNumbers))))) # 15:0, 14:1, 1:14
+    horiz_letters_dict = dict(zip(horiz_letters,list(range(0,len(horiz_letters))))) # 'a':0, 'b':1
+    vert_numbers_dict = dict(zip(vert_numbers[::-1], list(range(0,len(vert_numbers))))) # 15:0, 14:1, 1:14
 
     # https://www.reddit.com/r/foxholegame/comments/mopq7l/foxholes_map_is_64km2/
-    regionHorizLength = 2184
-    regionVertLength = 1890 #hard coded !
-    gridHorizLength = regionHorizLength / len(horizLetters)
-    gridVertLength = regionVertLength / len(vertNumbers)
+    region_horiz_length = 2184
+    region_vert_length = 1890 #hard coded !
+    grid_horiz_length = region_horiz_length / len(horiz_letters)
+    grid_vert_length = region_vert_length / len(vert_numbers)
 
     # distance from botton left of grid map (A15)
-    runningHorizontalDistance = 0
-    runningVerticalDistance = 0
+    running_horizontal_distance = 0
+    running_vertical_distance = 0
     #789
     #456
     #123
@@ -197,16 +194,16 @@ def originDistFromGridCoord(gridCoord):
     # returnResult = aziDist.search(result).groups()
 
     try:
-        x = re.search(r"(\w{1})(\d{1,})[Kk](\d)[Kk](\d)", gridCoord)
-        horizLetter = x.group(1).lower()
-        vertNumber = int(x.group(2))
+        x = re.search(r"(\w{1})(\d{1,})[Kk](\d)[Kk](\d)", grid_coord)
+        horiz_letter = x.group(1).lower()
+        vert_number = int(x.group(2))
         keypad = int(x.group(3))
-        secondKeypad = int(x.group(4))
+        second_keypad = int(x.group(4))
         case = 1
     except:
-        x = re.search(r"(\w{1})(\d{1,})[Kk](\d)", gridCoord)
-        horizLetter = x.group(1).lower()
-        vertNumber = int(x.group(2))
+        x = re.search(r"(\w{1})(\d{1,})[Kk](\d)", grid_coord)
+        horiz_letter = x.group(1).lower()
+        vert_number = int(x.group(2))
         keypad = int(x.group(3))
         case = 2
 
@@ -214,263 +211,262 @@ def originDistFromGridCoord(gridCoord):
 
 
     # handles grid square (G9)
-    runningHorizontalDistance += horizLettersDict[horizLetter]*gridHorizLength  
-    runningVerticalDistance += vertNumbersDict[vertNumber]*gridVertLength
+    running_horizontal_distance += horiz_letters_dict[horiz_letter]*grid_horiz_length  
+    running_vertical_distance += vert_numbers_dict[vert_number]*grid_vert_length
 
     # handles keypad, convert to hor/vert distance
     # one part handles vertical and another conditional handles horiztonal
     if case == 1 or case == 2:
-        runningHorizontalDistance += gridHorizLength/6 # moves to middle of keypad 1
-        runningVerticalDistance += gridVertLength/6
-        horVertVals = keypadDistance(gridHorizLength/3, gridVertLength/3, keypad)
-        runningHorizontalDistance += horVertVals[0]
-        runningVerticalDistance += horVertVals[1]
+        running_horizontal_distance += grid_horiz_length/6 # moves to middle of keypad 1
+        running_vertical_distance += grid_vert_length/6
+        horiz_vert_vals = keypad_distance(grid_horiz_length/3, grid_vert_length/3, keypad)
+        running_horizontal_distance += horiz_vert_vals[0]
+        running_vertical_distance += horiz_vert_vals[1]
     # handles if additional keypad is added
     if case == 1:
-        runningHorizontalDistance -= gridHorizLength/6 # resets to bottom left
-        runningVerticalDistance -= gridVertLength/6
-        runningHorizontalDistance += gridHorizLength/18 # centers for smaller keypad
-        runningVerticalDistance += gridVertLength/18
-        horVertVals = keypadDistance(gridHorizLength/9, gridVertLength/9, secondKeypad)
-        runningHorizontalDistance += horVertVals[0]
-        runningVerticalDistance += horVertVals[1]
-    return [runningHorizontalDistance, runningVerticalDistance]
+        running_horizontal_distance -= grid_horiz_length/6 # resets to bottom left
+        running_vertical_distance -= grid_vert_length/6
+        running_horizontal_distance += grid_horiz_length/18 # centers for smaller keypad
+        running_vertical_distance += grid_vert_length/18
+        horiz_vert_vals = keypad_distance(grid_horiz_length/9, grid_vert_length/9, second_keypad)
+        running_horizontal_distance += horiz_vert_vals[0]
+        running_vertical_distance += horiz_vert_vals[1]
+    return [running_horizontal_distance, running_vertical_distance]
 
 
-def keypadDistance(horizKeypadLength, vertKeypadLength, keypad):
-    runningVerticalDistance = 0
-    runningHorizontalDistance = 0
+def keypad_distance(horiz_keypad_length, vert_keypad_length, keypad):
+    running_vertical_distance = 0
+    running_horizontal_distance = 0
     if keypad in [4,5,6]:
-        runningVerticalDistance += vertKeypadLength
+        running_vertical_distance += vert_keypad_length
     elif keypad in [7,8,9]:
-        runningVerticalDistance += vertKeypadLength*2
+        running_vertical_distance += vert_keypad_length*2
 
     if keypad in [2,5,8]:
-        runningHorizontalDistance += horizKeypadLength
+        running_horizontal_distance += horiz_keypad_length
     elif keypad in [3,6,9]:
-        runningHorizontalDistance += horizKeypadLength*2
+        running_horizontal_distance += horiz_keypad_length*2
 
-    return [runningHorizontalDistance, runningVerticalDistance]
+    return [running_horizontal_distance, running_vertical_distance]
 
     # return horizontal and vertical distance from grid coord
 
-def recalculateSTValues():
-    newGlobalDistST = dpg.get_value("spotterTargetDistChange")
-    newGlobalAziST = dpg.get_value("spotterTargetAziChange") % 360
-    for idx in range(1,gunCounter+1):
-        dpg.set_value(f"{idx}2", newGlobalDistST)
-        dpg.set_value(f"{idx}3", newGlobalAziST)
-        firingSolutionDict[idx].spotterToTargetDistance = newGlobalDistST
-        firingSolutionDict[idx].spotterToTargetAzimuth = newGlobalAziST
-        setValues(idx, "adjusted")
+def recalculate_st_values():
+    new_global_dist_st = dpg.get_value("spotterTargetDistChange")
+    new_global_azi_st = dpg.get_value("spotterTargetAziChange") % 360
+    for idx in range(1,GUN_COUNTER+1):
+        dpg.set_value(f"{idx}2", new_global_dist_st)
+        dpg.set_value(f"{idx}3", new_global_azi_st)
+        FIRING_SOLUTION_DICT[idx].spotter_target_distance = new_global_dist_st
+        FIRING_SOLUTION_DICT[idx].spotter_target_azimuth = new_global_azi_st
+        set_values(idx, "adjusted")
         
-def recalculateSGValues():
-    refGunName = dpg.get_value("spotterPosDropdown")
-    newRefDistSG = dpg.get_value("spotterGunDistChange")
-    newRefAziSG = dpg.get_value("spotterGunAziChange") % 360
-    newRefAziSGBack = newRefAziSG - 180 if newRefAziSG >= 180 else newRefAziSG + 180
+def recalculate_sg_values():
+    ref_gun_name = dpg.get_value("spotterPosDropdown")
+    new_ref_dist_sg = dpg.get_value("spotterGunDistChange")
+    new_ref_azi_sg = dpg.get_value("spotterGunAziChange") % 360
+    new_ref_azi_sg_back = new_ref_azi_sg - 180 if new_ref_azi_sg >= 180 else new_ref_azi_sg + 180
     # back azimuth
-    # calculate internal gun relationships with respect to the refGunName chosen with historical values then recalculate updated SG and update
-    if len(firingSolutionDict) >= 2:
-        refKey = -1
-        for key, val in firingSolutionDict.items():  # find key of chosen refGunName
-            if val.gunName == refGunName:
-                refKey = key
-        if refKey == -1:
+    # calculate internal gun relationships with respect to the ref_gun_name chosen with historical values then recalculate updated SG and update
+    if len(FIRING_SOLUTION_DICT) >= 2:
+        ref_key = -1
+        for key, val in FIRING_SOLUTION_DICT.items():  # find key of chosen ref_gun_name
+            if val.gun_name == ref_gun_name:
+                ref_key = key
+        if ref_key == -1:
             return
-        # calculating everything relative to the chosen refGunName, azimuth is traveling from ref to curr
-        oldRefSGDist = firingSolutionDict[refKey].spotterToGunDistance
-        oldRefSGAzi = firingSolutionDict[refKey].spotterToGunAzimuth
-        for key, val in firingSolutionDict.items():
-            if val.gunName == refGunName:
+        # calculating everything relative to the chosen ref_gun_name, azimuth is traveling from ref to curr
+        old_ref_sg_dist = FIRING_SOLUTION_DICT[ref_key].spotter_gun_distance
+        old_ref_sg_azi = FIRING_SOLUTION_DICT[ref_key].spotter_gun_azimuth
+        for key, val in FIRING_SOLUTION_DICT.items():
+            if val.gun_name == ref_gun_name:
                 continue
-            # spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance
-            currSGDist = firingSolutionDict[key].spotterToGunDistance
-            currSGAzi = firingSolutionDict[key].spotterToGunAzimuth
-            refToCurrAzi = cH.findAzimuthGunToTarget(
-                currSGAzi, currSGDist, oldRefSGAzi, oldRefSGDist)
-            refToCurrDist = cH.findDistanceGunToTarget(
-                currSGAzi, currSGDist, oldRefSGAzi, oldRefSGDist)
-            newCurrSGAzi = cH.findAzimuthGunToTarget(
-                refToCurrAzi, refToCurrDist, newRefAziSGBack, newRefDistSG)
-            newCurrSGDist = cH.findDistanceGunToTarget(
-                refToCurrAzi, refToCurrDist, newRefAziSGBack, newRefDistSG)
+            # spotter_target_azimuth, spotter_target_distance, spotter_gun_azimuth, spotter_gun_distance
+            curr_sg_dist = FIRING_SOLUTION_DICT[key].spotter_gun_distance
+            curr_sg_azi = FIRING_SOLUTION_DICT[key].spotter_gun_azimuth
+            ref_to_curr_azi = cH.find_azimuth_gun_target(
+                curr_sg_azi, curr_sg_dist, old_ref_sg_azi, old_ref_sg_dist)
+            ref_to_curr_dist = cH.find_distance_gun_target(
+                curr_sg_azi, curr_sg_dist, old_ref_sg_azi, old_ref_sg_dist)
+            new_curr_sg_azi = cH.find_azimuth_gun_target(
+                ref_to_curr_azi, ref_to_curr_dist, new_ref_azi_sg_back, new_ref_dist_sg)
+            new_curr_sg_dist = cH.find_distance_gun_target(
+                ref_to_curr_azi, ref_to_curr_dist, new_ref_azi_sg_back, new_ref_dist_sg)
             dpg.set_value(
-                f"{key}4", newCurrSGDist)
+                f"{key}4", new_curr_sg_dist)
             dpg.set_value(
-                f"{key}5", newCurrSGAzi)
-            firingSolutionDict[key].spotterToGunDistance = newCurrSGDist
-            firingSolutionDict[key].spotterToGunAzimuth = newCurrSGAzi
-            setValues(key, "adjusted")
+                f"{key}5", new_curr_sg_azi)
+            FIRING_SOLUTION_DICT[key].spotter_gun_distance = new_curr_sg_dist
+            FIRING_SOLUTION_DICT[key].spotter_gun_azimuth = new_curr_sg_azi
+            set_values(key, "adjusted")
     # update ref
         dpg.set_value(
-            f"{refKey}4", newRefDistSG)
+            f"{ref_key}4", new_ref_dist_sg)
         dpg.set_value(
-            f"{refKey}5", newRefAziSG)
-        firingSolutionDict[refKey].spotterToGunDistance = newRefDistSG
-        firingSolutionDict[refKey].spotterToGunAzimuth = newRefAziSG
-        setValues(refKey, "adjusted")
+            f"{ref_key}5", new_ref_azi_sg)
+        FIRING_SOLUTION_DICT[ref_key].spotter_gun_distance = new_ref_dist_sg
+        FIRING_SOLUTION_DICT[ref_key].spotter_gun_azimuth = new_ref_azi_sg
+        set_values(ref_key, "adjusted")
 
-def globalWindCalc():
-    distSF = dpg.get_value("distSpotterToFlag")
-    aziSF = dpg.get_value("aziSpotterToFlag") % 360
-    distSP = dpg.get_value("distSpotterToPole")
-    aziSP = dpg.get_value("aziSpotterToPole") % 360
-    newWindAzimuth = cH.findAzimuthGunToTarget(aziSF,distSF,aziSP,distSP)
-    dpg.set_value("globalWindAzimuth",newWindAzimuth)
-    for key in range(1,gunCounter+1):
-        firingSolutionDict[key].windAzimuth = newWindAzimuth
-        setValues(key, "adjusted")
+def global_wind_calc():
+    dist_sf = dpg.get_value("distSpotterToFlag")
+    azi_sf = dpg.get_value("aziSpotterToFlag") % 360
+    dist_sp = dpg.get_value("distSpotterToPole")
+    azi_sp = dpg.get_value("aziSpotterToPole") % 360
+    new_wind_azimuth = cH.find_azimuth_gun_target(azi_sf,dist_sf,azi_sp,dist_sp)
+    dpg.set_value("globalwind_azimuth",new_wind_azimuth)
+    for key in range(1,GUN_COUNTER+1):
+        FIRING_SOLUTION_DICT[key].wind_azimuth = new_wind_azimuth
+        set_values(key, "adjusted")
 
-def impliedWindCalc():
-    refImpliedGunName = dpg.get_value("impliedWindDropdown")
-    distSI = dpg.get_value("distSpotterToImpact")
-    aziSI = dpg.get_value("aziSpotterToImpact") % 360
-    for key, val in firingSolutionDict.items():
-        if val.gunName == refImpliedGunName:
-            refKey = key
+def implied_wind_calc():
+    ref_implied_gun_name = dpg.get_value("impliedWindDropdown")
+    dist_si = dpg.get_value("distSpotterToImpact")
+    azi_si = dpg.get_value("aziSpotterToImpact") % 360
+    for key, val in FIRING_SOLUTION_DICT.items():
+        if val.gun_name == ref_implied_gun_name:
+            ref_key = key
             break
-    # findDistanceGunToTarget(spotterToTargetAzimuth, spotterToTargetDistance, spotterToGunAzimuth, spotterToGunDistance)
-    origDistSG = firingSolutionDict[refKey].spotterToGunDistance
-    origAziSG = firingSolutionDict[refKey].spotterToGunAzimuth
-    origDistGT = firingSolutionDict[refKey].adjustedGunToTargetDistance # changed
-    origAziGT = firingSolutionDict[refKey].adjustedGunToTargetAzimuth
+    # find_distance_gun_target(spotter_target_azimuth, spotter_target_distance, spotter_gun_azimuth, spotter_gun_distance)
+    orig_dist_sg = FIRING_SOLUTION_DICT[ref_key].spotter_gun_distance
+    orig_azi_sg = FIRING_SOLUTION_DICT[ref_key].spotter_gun_azimuth
+    orig_dist_gt = FIRING_SOLUTION_DICT[ref_key].adjusted_gun_target_distance # changed
+    orig_azi_gt = FIRING_SOLUTION_DICT[ref_key].adjusted_gun_target_azimuth
 
-    distGI = cH.findDistanceGunToTarget(aziSI, distSI, origAziSG, origDistSG)
-    aziGI = cH.findAzimuthGunToTarget(aziSI, distSI, origAziSG, origDistSG)
+    dist_gi = cH.find_distance_gun_target(azi_si, dist_si, orig_azi_sg, orig_dist_sg)
+    azi_gi = cH.find_azimuth_gun_target(azi_si, dist_si, orig_azi_sg, orig_dist_sg)
 
     # implied wind force, implied wind azimuth
-    impWF = cH.findDistanceGunToTarget(aziGI, distGI, origAziGT, origDistGT)
-    impWA = cH.findAzimuthGunToTarget(aziGI, distGI, origAziGT, origDistGT)
+    imp_wf = cH.find_distance_gun_target(azi_gi, dist_gi, orig_azi_gt, orig_dist_gt)
+    imp_wa = cH.find_azimuth_gun_target(azi_gi, dist_gi, orig_azi_gt, orig_dist_gt)
 
-    dpg.set_value("impliedWindForce",f"{impWF:.2f}")
-    dpg.set_value("impliedWindAzimuth",f"{impWA:.2f}")
+    dpg.set_value("implied_wind_force",f"{imp_wf:.2f}")
+    dpg.set_value("impliedwind_azimuth",f"{imp_wa:.2f}")
     # have impval in row call callback, global push pushes whatever is in the cell to global & recalc
 
-def pushImpliedWindToGlobal():
-    impliedWindForce = float(dpg.get_value("impliedWindForce"))
-    impliedWindForceAzimuth = float(dpg.get_value("impliedWindAzimuth")) % 360
-    dpg.set_value("globalWindAzimuth",impliedWindForceAzimuth)
+def push_implied_wind_to_global():
+    implied_wind_force = float(dpg.get_value("implied_wind_force"))
+    implied_wind_force_azimuth = float(dpg.get_value("impliedwind_azimuth")) % 360
+    dpg.set_value("globalwind_azimuth",implied_wind_force_azimuth)
 
-    impliedWindForceStr = f"IWF: {impliedWindForce:.2f}"
-    dpg.configure_item("windForceDropdown", items=[1,2,3, impliedWindForceStr])
-    dpg.set_value("windForceDropdown",impliedWindForceStr)
+    implied_wind_force_strength = f"IWF: {implied_wind_force:.2f}"
+    dpg.configure_item("wind_forceDropdown", items=[1,2,3, implied_wind_force_strength])
+    dpg.set_value("wind_forceDropdown",implied_wind_force_strength)
 
-    for key in range(1,gunCounter+1):
-        firingSolutionDict[key].windForce = impliedWindForceStr
-        firingSolutionDict[key].windAzimuth = impliedWindForceAzimuth
-        setValues(key, "adjusted")
+    for key in range(1,GUN_COUNTER+1):
+        FIRING_SOLUTION_DICT[key].wind_force = implied_wind_force_strength
+        FIRING_SOLUTION_DICT[key].wind_azimuth = implied_wind_force_azimuth
+        set_values(key, "adjusted")
 
 
-def horizDeflCalc(sender, app_data, user_data):
-    distGI = float(dpg.get_value("distGunToImpactDeflection"))
-    azimuthDeflection = float(dpg.get_value("azimuthDeflection"))
-    offsetMetersDeflection = float(dpg.get_value("offsetMetersDeflection"))
-    holdConstant = str(dpg.get_value("holdConstantDropdown"))
-    # 1,2,3 = distGI, azi, metersOffset
-    changedInput = user_data[0]
-    optionList = ["distGI","Azi.","Offset Meters"]
-    for val in optionList:
-        if holdConstant == changedInput:
+def horiz_defl_calc(sender, app_data, user_data):
+    dist_gi = float(dpg.get_value("distGunToImpactDeflection"))
+    azimuth_deflection = float(dpg.get_value("azimuth_deflection"))
+    offset_meters_deflection = float(dpg.get_value("offset_meters_deflection"))
+    hold_constant = str(dpg.get_value("hold_constantDropdown"))
+    changed_input = user_data[0]
+    option_list = ["dist_gi","Azi.","Offset Meters"]
+    for val in option_list:
+        if hold_constant == changed_input:
             return
-        elif val not in [holdConstant, changedInput]:
-            outputVar = val
+        elif val not in [hold_constant, changed_input]:
+            output_var = val
     
-    if outputVar == optionList[0]: #distGI
+    if output_var == option_list[0]: #dist_gi
         # find length of side isosceles triangle
         # (baseSide/2)/cosine(90-betaAngle/2)
-        adjacentAngleRadians = math.radians(90-azimuthDeflection/2)
-        newDistGI = (offsetMetersDeflection/2)/math.cos(adjacentAngleRadians) #inputs radians
-        dpg.set_value("distGunToImpactDeflection",newDistGI)
-    elif outputVar == optionList[1]: #Azi
-        newAzimuthDeflection = math.degrees(math.acos((2*distGI**2 - offsetMetersDeflection**2)/(2*distGI**2)))
-        dpg.set_value("azimuthDeflection",newAzimuthDeflection)
-    elif outputVar == optionList[2]: #Offset Meters
-        newOffsetMetersDeflection = math.sin(math.radians(azimuthDeflection))*distGI
-        dpg.set_value("offsetMetersDeflection",newOffsetMetersDeflection)
+        adjacent_angle_radians = math.radians(90-azimuth_deflection/2)
+        new_dist_gi = (offset_meters_deflection/2)/math.cos(adjacent_angle_radians) #inputs radians
+        dpg.set_value("distGunToImpactDeflection",new_dist_gi)
+    elif output_var == option_list[1]: #Azi
+        new_azimuth_deflection = math.degrees(math.acos((2*dist_gi**2 - offset_meters_deflection**2)/(2*dist_gi**2)))
+        dpg.set_value("azimuth_deflection",new_azimuth_deflection)
+    elif output_var == option_list[2]: #Offset Meters
+        new_offset_meters_deflection = math.sin(math.radians(azimuth_deflection))*dist_gi
+        dpg.set_value("offset_meters_deflection",new_offset_meters_deflection)
 
-def setHotkeys():
+def set_hotkeys():
         with open("keybinds.txt") as f:
             lines = f.readlines()
             for line in lines:
                 line = line.strip() # parse string
-                valList = line.split(',')
-                valList[1] = int(valList[1])
-                keyboard.add_hotkey(valList[0], lambda vals=valList[1:]: updateFSByScreenCap(vals[0],vals[1]))
+                val_list = line.split(',')
+                val_list[1] = int(val_list[1])
+                keyboard.add_hotkey(val_list[0], lambda vals=val_list[1:]: updateFSByScreenCap(vals[0],vals[1]))
                 # 0 = keybind, 1 = which rows are affected, 2 = columns/type
                 # black magic: https://stackoverflow.com/questions/21791482/split-list-into-different-variables
 
 def updateFSByScreenCap(key, type):
-    if key in firingSolutionDict:
+    if key in FIRING_SOLUTION_DICT:
         if type == "target":
             capDist, capAzi = ocr.screepCapExtract("target")
-            firingSolutionDict[key].spotterToTargetDistance = capDist
-            firingSolutionDict[key].spotterToTargetAzimuth = capAzi
-            setValues(key, "target")
+            FIRING_SOLUTION_DICT[key].spotter_target_distance = capDist
+            FIRING_SOLUTION_DICT[key].spotter_target_azimuth = capAzi
+            set_values(key, "target")
         elif type == "gun":
             capDist, capAzi = ocr.screepCapExtract("gun")
-            firingSolutionDict[key].spotterToGunDistance = capDist
-            firingSolutionDict[key].spotterToGunAzimuth = capAzi
-            setValues(key, "gun")
+            FIRING_SOLUTION_DICT[key].spotter_gun_distance = capDist
+            FIRING_SOLUTION_DICT[key].spotter_gun_azimuth = capAzi
+            set_values(key, "gun")
         elif type == "global":
             if key == 1: #spotter to target global change
                 capDist, capAzi = ocr.screepCapExtract("global1")
                 dpg.set_value("spotterTargetDistChange",capDist)
                 dpg.set_value("spotterTargetAziChange",capAzi)
-                recalculateSTValues()
+                recalculate_st_values()
             elif key == 2: #SG master
                 capDist, capAzi = ocr.screepCapExtract("global2")
                 dpg.set_value("spotterGunDistChange",capDist)
                 dpg.set_value("spotterGunAziChange",capAzi)
-                recalculateSGValues()
+                recalculate_sg_values()
             elif key == 3: #global wind flag ctrl + V
                 capDist, capAzi = ocr.screepCapExtract("global3")
                 dpg.set_value("distSpotterToFlag",capDist)
                 dpg.set_value("aziSpotterToFlag",capAzi)
-                globalWindCalc()
+                global_wind_calc()
             elif key == 4: #global wind pole shift + V
                 capDist, capAzi = ocr.screepCapExtract("global4")
                 dpg.set_value("distSpotterToPole",capDist)
                 dpg.set_value("aziSpotterToPole",capAzi)
-                globalWindCalc()
+                global_wind_calc()
 
-        setValues(key, "adjusted")
+        set_values(key, "adjusted")
 
 
 
-def fileOptions(sender, app_data):
+def file_options(sender, app_data):
     if app_data == "Open FS":
-        filePath =  filedialog.askopenfilename(initialdir = "../firingSolutionTables",title = "Select file",filetypes = (("txt files", "*.txt"),("all files","*.*")))
-        if filePath == "":
+        file_path =  filedialog.askopenfilename(initialdir = "../firingSolutionTables",title = "Select file",filetypes = (("txt files", "*.txt"),("all files","*.*")))
+        if file_path == "":
             return
-        for idx in range(gunCounter):
+        for _ in range(GUN_COUNTER):
             delete_guns()
-        with open(filePath) as f:
+        with open(file_path) as f:
             lines = f.readlines()
             for line in lines:
                 add_guns()
                 line = line.strip() # parse string
-                valList = line.split(',')
-                valList = [valList[0]] + list(map(float, valList[1:]))
+                val_list = line.split(',')
+                val_list = [val_list[0]] + list(map(float, val_list[1:]))
 
-                firingSolutionDict[gunCounter].gunName = valList[0] 
-                firingSolutionDict[gunCounter].spotterToTargetDistance = valList[1] 
-                firingSolutionDict[gunCounter].spotterToTargetAzimuth = valList[2]
-                firingSolutionDict[gunCounter].spotterToGunDistance = valList[3]
-                firingSolutionDict[gunCounter].spotterToGunAzimuth = valList[4]
-                firingSolutionDict[gunCounter].adjustedGunToTargetDistance = valList[5]
-                firingSolutionDict[gunCounter].adjustedGunToTargetAzimuth = valList[6]
-                setValues(gunCounter, "gunname")
-                setValues(gunCounter, "target")
-                setValues(gunCounter, "gun")
-                setValues(gunCounter, "adjusted")
+                FIRING_SOLUTION_DICT[GUN_COUNTER].gun_name = val_list[0] 
+                FIRING_SOLUTION_DICT[GUN_COUNTER].spotter_target_distance = val_list[1] 
+                FIRING_SOLUTION_DICT[GUN_COUNTER].spotter_target_azimuth = val_list[2]
+                FIRING_SOLUTION_DICT[GUN_COUNTER].spotter_gun_distance = val_list[3]
+                FIRING_SOLUTION_DICT[GUN_COUNTER].spotter_gun_azimuth = val_list[4]
+                FIRING_SOLUTION_DICT[GUN_COUNTER].adjusted_gun_target_distance = val_list[5]
+                FIRING_SOLUTION_DICT[GUN_COUNTER].adjusted_gun_target_azimuth = val_list[6]
+                set_values(GUN_COUNTER, "gunname")
+                set_values(GUN_COUNTER, "target")
+                set_values(GUN_COUNTER, "gun")
+                set_values(GUN_COUNTER, "adjusted")
 
     # https://stackoverflow.com/questions/11295917/how-to-select-a-directory-and-store-the-location-using-tkinter-in-python
     elif app_data == "Save FS": #open folder, save text as what gui?
-        filePath =  filedialog.asksaveasfilename(initialdir = "../firingSolutionTables",
+        file_path =  filedialog.asksaveasfilename(initialdir = "../firingSolutionTables",
             title="File name to save as",filetypes = (("txt files", "*.txt"),("all files", "*.*")))
-        with open(filePath+'.txt', 'w') as f:
-            for row in range(1,gunCounter+1):
+        with open(file_path+'.txt', 'w') as f:
+            for row in range(1,GUN_COUNTER+1):
                 for column in range(1,8): #7 columns
                     f.write(str(dpg.get_value(f"{row}{column}")))
                     if column == 7:
@@ -478,7 +474,7 @@ def fileOptions(sender, app_data):
                         continue
                     f.write(',')
 
-# open and store firingSolutions in .txt and add keybinds to setHotkeys
+# open and store firingSolutions in .txt and add keybinds to set_hotkeys
 
 
 
@@ -486,4 +482,3 @@ if __name__ == "__main__":
 
     keyboard.add_hotkey("shift+1", updateFSByScreenCap(), args=(1, "target"))
     keyboard.add_hotkey("ctrl+1", updateFSByScreenCap(), args=(1, "gun"))
-    pass

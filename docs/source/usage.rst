@@ -14,7 +14,7 @@ Gun rows
         a. *Spotter* represents the individual with binoculars
         b. *Gun* represents the friendly artillery piece used
         c. *Target* represents the target that is being fired at by *Gun*
-        d. *distST* means the distance that is shown in binoculars when the *Spotter* looks at the *Target*
+        d. *dist_st* means the distance that is shown in binoculars when the *Spotter* looks at the *Target*
         e. The meanings of abbreviations can be found in the :doc:`glossary`
     2. The values that should be input into the *Gun* are those in the ``adjDistGT`` and ``adjAziGT`` columns
         a. Relative adjustments are found in ``CHG adjDGT`` and ``CHG adjAGT`` columns
@@ -25,7 +25,7 @@ Advanced functions
 ------------------
 Grid converter
 ^^^^^^^^^^^^^^
-    1. Functionality: calculates distance & azimuth between two grid coordinates and pushes those values to ``distST`` and ``aziST`` of a reference gun
+    1. Functionality: calculates distance & azimuth between two grid coordinates and pushes those values to ``dist_st`` and ``azi_st`` of a reference gun
     2. Usage: when target and gun locations are visible on map, but cannot be seen with binoculars
 
 ST Master

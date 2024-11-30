@@ -9,10 +9,10 @@ Global terms
 
 Standard functionality
 ----------------------
-    :distST: Distance from *Spotter* to *Target*
-    :aziST: Azimuth from *Spotter* to *Target*
-    :distSG: Distance from *Spotter* to *Gun*
-    :aziSG: Azimuth from *Spotter* to *Gun*
+    :dist_st: Distance from *Spotter* to *Target*
+    :azi_st: Azimuth from *Spotter* to *Target*
+    :dist_sg: Distance from *Spotter* to *Gun*
+    :azi_sg: Azimuth from *Spotter* to *Gun*
     :adjDistGT: Wind-adjusted Distance *Gun* to *Target*
     :adjAziGT: Wind-adjusted Azimuth *Gun* to *Target*
     :CHG adjDGT: Net change from current and previous adjDistGT values
@@ -26,19 +26,19 @@ Advanced functions
     :SG Master: function that globally changes *Spotter* to *Gun* values based on new spotter position to reference Gun
 
     :Wind Flag: function that calculates and globally pushes *Wind Azimuth* based on fly & hoist end, i.e. tip of flag vs. pole
-    :distSF: Distance from *Spotter* to *Flag* (fly end/flag tip)
-    :aziSF: Azimuth from *Spotter* to *Flag* (fly end/flag tip)
-    :distSP: Distance from *Spotter* to *Pole* (hoist end)
-    :aziSP: Azimuth from *Spotter* to *Pole* (hoist end)
+    :dist_sf: Distance from *Spotter* to *Flag* (fly end/flag tip)
+    :azi_sf: Azimuth from *Spotter* to *Flag* (fly end/flag tip)
+    :dist_sp: Distance from *Spotter* to *Pole* (hoist end)
+    :azi_sp: Azimuth from *Spotter* to *Pole* (hoist end)
 
     :Implied Wind Ref.: function that calculates implied wind values based off of point of aim & impact, or pushes hard coded values to global, based off of reference gun
-    :distSI: Distance from *Spotter* to *Impact*
-    :aziSI: Azimuth from *Spotter* to *Impact*
-    :impWF: Implied wind force in meters, cell value can be calculated or manually input
-    :impWA: Implied wind azimuth, cell value can be calculated or manually input
+    :dist_si: Distance from *Spotter* to *Impact*
+    :azi_si: Azimuth from *Spotter* to *Impact*
+    :imp_wf: Implied wind force in meters, cell value can be calculated or manually input
+    :imp_wa: Implied wind azimuth, cell value can be calculated or manually input
 
     :Horiz. Defl.: Horizontal deflection, function that calculates how far distance shifts aim, given a set change in azimuth
-    :distGI: Distance from *Gun* to *Impact*
+    :dist_gi: Distance from *Gun* to *Impact*
     :Azi. CHG: Change in azimuth between two points of aim
     :Offset meters: Offset distance on aim caused by shift in azimuth/angle, and proportional to distance
 
