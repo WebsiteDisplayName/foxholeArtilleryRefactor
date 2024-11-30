@@ -13,7 +13,9 @@ dpg.create_context()
 with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
     with dpg.menu_bar(tag="mainMenuBar"):
         dpg.add_button(label="Add Guns", callback=cT.add_guns)
-        dpg.add_button(label="Delete Guns", callback=cT.delete_guns, tag="delete_gun")
+        dpg.add_button(
+            label="Delete Guns", callback=cT.delete_guns, tag="delete_gun"
+        )
         dpg.add_combo(
             tag="weaponDropdown",
             items=list(cH.WEAPONTYPEWINDFORCES.keys()),
@@ -81,8 +83,12 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
                 parent="grid_coordRow",
                 items=[],
             )
-            dpg.add_input_text(tag="grid_coord1", default_value="")  # dist_sg ref
-            dpg.add_input_text(tag="grid_coord2", default_value="")  # azi_sg ref
+            dpg.add_input_text(
+                tag="grid_coord1", default_value=""
+            )  # dist_sg ref
+            dpg.add_input_text(
+                tag="grid_coord2", default_value=""
+            )  # azi_sg ref
             dpg.add_button(
                 tag="grid_coordButton",  # clicking prompts are you sure you want to recalculate sg?
                 label="WARNING",

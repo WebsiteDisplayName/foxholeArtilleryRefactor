@@ -10,6 +10,7 @@ import easyocr
 import keyboard
 import numpy as np
 import PIL
+
 #! python3
 import pyautogui
 from PIL import Image

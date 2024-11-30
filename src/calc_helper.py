@@ -46,12 +46,18 @@ def find_azimuth_gun_target(
     spotter_gun_azimuth,
     spotter_gun_distance,
 ):
-    target_x = spotter_target_distance * math.sin(math.radians(spotter_target_azimuth))
-    target_y = spotter_target_distance * math.cos(math.radians(spotter_target_azimuth))
+    target_x = spotter_target_distance * math.sin(
+        math.radians(spotter_target_azimuth)
+    )
+    target_y = spotter_target_distance * math.cos(
+        math.radians(spotter_target_azimuth)
+    )
     gun_x = spotter_gun_distance * math.sin(math.radians(spotter_gun_azimuth))
     gun_y = spotter_gun_distance * math.cos(math.radians(spotter_gun_azimuth))
 
-    return (450 - math.atan2(target_y - gun_y, target_x - gun_x) * 180 / math.pi) % 360
+    return (
+        450 - math.atan2(target_y - gun_y, target_x - gun_x) * 180 / math.pi
+    ) % 360
 
 
 def findWindAdjustedGunToTargetAziDist(
