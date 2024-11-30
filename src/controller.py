@@ -19,42 +19,41 @@ FIRING_SOLUTION_DICT = {}
 
 def update_firing_solution(sender, app_data, user_data):
     var_to_change = user_data[1]
-    if var_to_change == 1:  # gun name I changed this
-        FIRING_SOLUTION_DICT[user_data[0]].gun_name = app_data
-        dpg.configure_item("gridGunDropdown", items=[
-            FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
-        dpg.configure_item("spotterPosDropdown", items=[
-            FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
-        dpg.configure_item("impliedWindDropdown", items=[
-            FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
-
-    elif var_to_change == 2:  # dist_st
-        FIRING_SOLUTION_DICT[user_data[0]].spotter_target_distance = app_data
-    elif var_to_change == 3:  # azi_st
-        FIRING_SOLUTION_DICT[user_data[0]
-                           ].spotter_target_azimuth = app_data % 360
-    elif var_to_change == 4:  # dist_sg
-        FIRING_SOLUTION_DICT[user_data[0]].spotter_gun_distance = app_data
-    elif var_to_change == 5:  # azi_sg
-        FIRING_SOLUTION_DICT[user_data[0]].spotter_gun_azimuth = app_data % 360
-    elif var_to_change == 6:  # weapon type
-        for key, fs in FIRING_SOLUTION_DICT.items():
-            fs.weapon_type = app_data
-            set_values(key, "adjusted")
-        return
-    elif var_to_change == 7:  # wind force
-        for key, fs in FIRING_SOLUTION_DICT.items():
-            if isinstance(app_data, str):
-                fs.wind_force = app_data
-            else:
-                fs.wind_force = int(app_data)
-            set_values(key, "adjusted")
-        return
-    elif var_to_change == 8:  # wind azimuth
-        for key, fs in FIRING_SOLUTION_DICT.items():
-            fs.wind_azimuth = int(app_data) % 360
-            set_values(key, "adjusted")
-        return
+    match var_to_change:
+        case 1:  # gun name I changed this
+            FIRING_SOLUTION_DICT[user_data[0]].gun_name = app_data
+            dpg.configure_item("gridGunDropdown", items=[
+                FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
+            dpg.configure_item("spotterPosDropdown", items=[
+                FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
+            dpg.configure_item("impliedWindDropdown", items=[
+                FIRING_SOLUTION_DICT[key].gun_name for key, val in FIRING_SOLUTION_DICT.items()])
+        case 2:  # dist_st
+            FIRING_SOLUTION_DICT[user_data[0]].spotter_target_distance = app_data
+        case 3:  # azi_st
+            FIRING_SOLUTION_DICT[user_data[0]].spotter_target_azimuth = app_data % 360
+        case 4:  # dist_sg
+            FIRING_SOLUTION_DICT[user_data[0]].spotter_gun_distance = app_data
+        case 5:  # azi_sg
+            FIRING_SOLUTION_DICT[user_data[0]].spotter_gun_azimuth = app_data % 360
+        case 6:  # weapon type
+            for key, fs in FIRING_SOLUTION_DICT.items():
+                fs.weapon_type = app_data
+                set_values(key, "adjusted")
+            return
+        case 7:  # wind force
+            for key, fs in FIRING_SOLUTION_DICT.items():
+                if isinstance(app_data, str):
+                    fs.wind_force = app_data
+                else:
+                    fs.wind_force = int(app_data)
+                set_values(key, "adjusted")
+            return
+        case 8:  # wind azimuth
+            for key, fs in FIRING_SOLUTION_DICT.items():
+                fs.wind_azimuth = int(app_data) % 360
+                set_values(key, "adjusted")
+            return
     set_values(user_data[0], "adjusted")
 
 
@@ -200,7 +199,7 @@ def origin_dist_from_grid_coord(grid_coord):
         keypad = int(x.group(3))
         second_keypad = int(x.group(4))
         case = 1
-    except:
+    except Exception as e:
         x = re.search(r"(\w{1})(\d{1,})[Kk](\d)", grid_coord)
         horiz_letter = x.group(1).lower()
         vert_number = int(x.group(2))

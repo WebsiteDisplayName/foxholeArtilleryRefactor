@@ -48,16 +48,16 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="Gun Coord.")
         dpg.add_table_column(label="Target Coord.")
         dpg.add_table_column(label="Recalc. Grid ST")
-        with dpg.table_row(tag=f"grid_coordRow"):
+        with dpg.table_row(tag="grid_coordRow"):
             dpg.add_text(default_value="")
             dpg.add_text(default_value="")
             dpg.add_combo(tag="gridGunDropdown",  # firing solution name ref
                           parent="grid_coordRow", items=[])
-            dpg.add_input_text(tag=f"grid_coord1",  # dist_sg ref
+            dpg.add_input_text(tag="grid_coord1",  # dist_sg ref
                               default_value="")
-            dpg.add_input_text(tag=f"grid_coord2",  # azi_sg ref
+            dpg.add_input_text(tag="grid_coord2",  # azi_sg ref
                               default_value="")
-            dpg.add_button(tag=f"grid_coordButton",  # clicking prompts are you sure you want to recalculate sg?
+            dpg.add_button(tag="grid_coordButton",  # clicking prompts are you sure you want to recalculate sg?
                            label="WARNING", callback=cT.grid_coord_conv)    
 
 
@@ -70,15 +70,15 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="dist_st")
         dpg.add_table_column(label="azi_st")
         dpg.add_table_column(label="Recalc. ST")
-        with dpg.table_row(tag=f"globalSpotterTargetRow"):
+        with dpg.table_row(tag="globalSpotterTargetRow"):
             dpg.add_text(default_value="")
             dpg.add_text(default_value="")
             dpg.add_text(default_value="")
-            dpg.add_input_double(tag=f"spotterTargetDistChange",  # dist_sg ref
+            dpg.add_input_double(tag="spotterTargetDistChange",  # dist_sg ref
                               default_value=0.0, step=0, step_fast=0, format="%.1f")
-            dpg.add_input_double(tag=f"spotterTargetAziChange",  # azi_sg ref
+            dpg.add_input_double(tag="spotterTargetAziChange",  # azi_sg ref
                               default_value=0.0, step=0, step_fast=0, format="%.1f")
-            dpg.add_button(tag=f"targetChangeButton",  # clicking prompts are you sure you want to recalculate sg?
+            dpg.add_button(tag="targetChangeButton",  # clicking prompts are you sure you want to recalculate sg?
                            label="WARNING", callback=cT.recalculate_st_values)
 
 
@@ -90,16 +90,16 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="dist_sg")
         dpg.add_table_column(label="azi_sg")
         dpg.add_table_column(label="Recalc. SG")
-        with dpg.table_row(tag=f"spotterRow"):
+        with dpg.table_row(tag="spotterRow"):
             dpg.add_text(default_value="")
             dpg.add_text(default_value="")
             dpg.add_combo(tag="spotterPosDropdown",  # firing solution name ref
                           parent="spotterRow", items=[])
-            dpg.add_input_double(tag=f"spotterGunDistChange",  # dist_sg ref
+            dpg.add_input_double(tag="spotterGunDistChange",  # dist_sg ref
                               default_value=0.0, step=0, step_fast=0, format="%.1f")
-            dpg.add_input_double(tag=f"spotterGunAziChange",  # azi_sg ref
+            dpg.add_input_double(tag="spotterGunAziChange",  # azi_sg ref
                               default_value=0.0, step=0, step_fast=0, format="%.1f")
-            dpg.add_button(tag=f"spotterChangeButton",  # clicking prompts are you sure you want to recalculate sg?
+            dpg.add_button(tag="spotterChangeButton",  # clicking prompts are you sure you want to recalculate sg?
                            label="WARNING", callback=cT.recalculate_sg_values)
 
     with dpg.table(tag="windChangeTable", header_row=True):
@@ -109,17 +109,17 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="dist_sp")
         dpg.add_table_column(label="azi_sp")
         dpg.add_table_column(label="Recalc. Wind Azi")
-        with dpg.table_row(tag=f"windRow"):
+        with dpg.table_row(tag="windRow"):
             dpg.add_text(default_value="")
-            dpg.add_input_double(tag=f"distSpotterToFlag",  # dist_st ref spotter to end of flag
+            dpg.add_input_double(tag="distSpotterToFlag",  # dist_st ref spotter to end of flag
                               default_value=0.0, step=0, step_fast=0, format="%.1f")
-            dpg.add_input_double(tag=f"aziSpotterToFlag",  # azi_st ref
+            dpg.add_input_double(tag="aziSpotterToFlag",  # azi_st ref
                               default_value=0.0, step=0, step_fast=0, format="%.1f")
-            dpg.add_input_double(tag=f"distSpotterToPole",  # dist_sg ref spotter to pole
+            dpg.add_input_double(tag="distSpotterToPole",  # dist_sg ref spotter to pole
                               default_value=0.0, step=0, step_fast=0, format="%.1f")
-            dpg.add_input_double(tag=f"aziSpotterToPole",  # azi_sg ref
+            dpg.add_input_double(tag="aziSpotterToPole",  # azi_sg ref
                               default_value=0.0, step=0, step_fast=0, format="%.1f")
-            dpg.add_button(tag=f"windChangeButton",  # push to global
+            dpg.add_button(tag="windChangeButton",  # push to global
                            label="WARNING", callback=cT.global_wind_calc)
 
     with dpg.table(tag="impliedWindChangeTable", header_row=True):
@@ -129,16 +129,16 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="imp_wf")
         dpg.add_table_column(label="imp_wa")
         dpg.add_table_column(label="Push to Global")
-        with dpg.table_row(tag=f"impliedWindRow"):
+        with dpg.table_row(tag="impliedWindRow"):
             dpg.add_combo(tag="impliedWindDropdown",  # firing solution name ref
                           parent="impliedWindRow", items=[])
-            dpg.add_input_double(tag=f"distSpotterToImpact",  # dist_si
+            dpg.add_input_double(tag="distSpotterToImpact",  # dist_si
                               default_value=0.0, step=0, step_fast=0, callback=cT.implied_wind_calc, format="%.1f")
-            dpg.add_input_double(tag=f"aziSpotterToImpact",  # azi_si
+            dpg.add_input_double(tag="aziSpotterToImpact",  # azi_si
                               default_value=0.0, step=0, step_fast=0, callback=cT.implied_wind_calc, format="%.1f")
-            dpg.add_input_text(tag=f"implied_wind_force",  default_value=0.0)
-            dpg.add_input_text(tag=f"impliedwind_azimuth", default_value=0.0)
-            dpg.add_button(tag=f"impliedWindChangeButton",  # push to global
+            dpg.add_input_text(tag="implied_wind_force",  default_value=0.0)
+            dpg.add_input_text(tag="impliedwind_azimuth", default_value=0.0)
+            dpg.add_button(tag="impliedWindChangeButton",  # push to global
                            label="WARNING", callback=cT.push_implied_wind_to_global)
 
 
@@ -150,15 +150,15 @@ with dpg.window(tag="Primary Window", label="main", pos=(200, 200)):
         dpg.add_table_column(label="Azi. CHG")
         dpg.add_table_column(label="Offset Meters")
         dpg.add_table_column(label="")
-        with dpg.table_row(tag=f"horizDeflectionRow"):
+        with dpg.table_row(tag="horizDeflectionRow"):
             dpg.add_text(default_value="")
             dpg.add_combo(tag="hold_constantDropdown",  # firing solution name ref
                           parent="horizDeflectionRow", items=["dist_gi","Azi.","Offset Meters"], default_value="Azi.", width=120)
-            dpg.add_input_double(tag=f"distGunToImpactDeflection",  # dist_gi ref
+            dpg.add_input_double(tag="distGunToImpactDeflection",  # dist_gi ref
                               default_value=0.0, step=0, step_fast=0, callback=cT.horiz_defl_calc, user_data=["dist_gi"], format="%.1f")
-            dpg.add_input_double(tag=f"azimuth_deflection",  # Azi. ref
+            dpg.add_input_double(tag="azimuth_deflection",  # Azi. ref
                               default_value=1, step=0, step_fast=0, callback=cT.horiz_defl_calc, user_data=["Azi."], format="%.1f")
-            dpg.add_input_double(tag=f"offset_meters_deflection",  # Offset meters ref
+            dpg.add_input_double(tag="offset_meters_deflection",  # Offset meters ref
                               default_value=0.0, step=0, step_fast=0, callback=cT.horiz_defl_calc, user_data=["Offset Meters"], format="%.1f")
             dpg.add_text(default_value="")
 
